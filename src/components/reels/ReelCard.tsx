@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import useHandleComment from '../../hooks/post/useHandleComments';
 import { BiDotsVertical } from 'react-icons/bi';
 import CommentSection from '../interactions/CommentSection';
+import ShareButton from '../ShareBtn';
 
 interface ReelCardProps {
   reel: {
@@ -109,6 +110,9 @@ export default function ReelCard({ reel }: ReelCardProps) {
     }
 
   };
+  const [localLikes, setLocalLikes] = useState(reel.likes);
+  const [isShareOpen, setIsShareOpen] = useState(false);
+
 
   return (
     <div
@@ -193,7 +197,10 @@ export default function ReelCard({ reel }: ReelCardProps) {
                 <span className="text-white text-xs mt-1"> {comments.length || 0} </span>
               </button>
 
-              <button className="flex flex-col items-center" aria-label="Share">
+              <button
+                onClick={() => setIsShareOpen(true)}
+                className="flex flex-col items-center"
+              >
                 <Send className="w-6 h-6 text-white" />
               </button>
 
@@ -232,9 +239,8 @@ export default function ReelCard({ reel }: ReelCardProps) {
               </button>
 
               <button
-                onClick={() => navigate('/signup')}
+                onClick={() => setIsShareOpen(true)}
                 className="flex flex-col items-center"
-                aria-label="Share"
               >
                 <Send className="w-6 h-6 text-white" />
               </button>
@@ -252,6 +258,11 @@ export default function ReelCard({ reel }: ReelCardProps) {
             </>
           )}
         </div>
+        <ShareButton
+          isOpen={isShareOpen}
+          onClose={() => setIsShareOpen(false)}
+          reelId={reel._id}
+        />
       </div>
 
       {isCommentOpen ? (

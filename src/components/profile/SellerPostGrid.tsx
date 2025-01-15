@@ -1,18 +1,21 @@
 import { Grid, Bookmark, Heart } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function SellerPostGrid(props) {
-    
-    const [posts, setPosts] = useState([]);
 
-    useEffect(() => {
-      if (props.posts && Array.isArray(props.posts[0])) {
-        setPosts(props.posts[0]);
-      } else {
-        setPosts(props.posts);
-      }
-    }, [props.posts]);
-  
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    if (props.posts && Array.isArray(props.posts[0])) {
+      setPosts(props.posts[0]);
+    } else {
+      setPosts(props.posts);
+    }
+  }, [props.posts]);
+
+  const navigate = useNavigate()
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Post Type Navigation */}
@@ -33,7 +36,7 @@ export default function SellerPostGrid(props) {
       <div className="grid grid-cols-3 gap-1 md:gap-8 mt-4">
         {posts.map((post) => (
 
-          <div key={post._id} className="relative aspect-square group">
+          <div onClick={() => navigate(`/reels/${post._id}`)} key={post._id} className="relative aspect-square group">
             {/* Check File Type */}
             {["mp4", "webm", "mov"].includes(post?.file?.fileType?.toLowerCase()) ? (
               <video
