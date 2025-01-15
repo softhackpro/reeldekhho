@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api/axiosConfig";
-import { Loader2, Loader2Icon } from "lucide-react";
+import { Loader2Icon } from "lucide-react";
 import { setUserProfile } from "../store/slices/authSlice";
 
 const EditProfile: React.FC = () => {

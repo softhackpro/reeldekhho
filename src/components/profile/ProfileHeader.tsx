@@ -105,7 +105,7 @@ export default function ProfileHeader(props:any) {
                 {user?.occupation}
               </h2>
               <p className="text-gray-600 dark:text-gray-400 sm:text-base text-xs">
-                <span>Website @ </span>
+                <span>Website @. </span>
                 <a href="#" className="text-blue-500 hover:underline">
                   {user?.website}
                 </a>{" "}
