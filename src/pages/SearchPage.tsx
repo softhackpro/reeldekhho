@@ -82,11 +82,12 @@ const indianCities = [
 ];
 
 export default function SearchPage() {
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  // const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [info, setInfo] = useState (false)
   const [Loading, setLoading] = useState(false)
   const fetchposts = async() =>{
-    const res = await axios.get(`${backendUrl}/post/getsearchresult`)
+    // const res = await axios.get(`${backendUrl}/post/getsearchresult`)
+    const res = await axios.get(`http://localhost:3000/post/getsearchresult`)
     console.log(res.data);
     setInfo(res.data)
   }

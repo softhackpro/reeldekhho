@@ -7,17 +7,21 @@ import axios from 'axios';
 import { IoMdChatboxes } from "react-icons/io";
 import SellerPostGrid from './SellerPostGrid';
 export default function SellerProfileHeader() {
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  // const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const {id} = useParams();
   const [profile, setProfile] = useState(true);
   const [Seller, setSeller] = useState(false);
   const [video, setVideo] = useState(true);
   const Navigate = useNavigate();
+
   const fetchprofile = async()=>{
-    const res = await axios.post(`${backendUrl}/post/getprofile/${id}`)
+    console.log("17 fetchprofile in sellerprofile");
+    
+    // const res = await axios.post(`${backendUrl}/post/getprofile/${id}`)
+    const res = await axios.post(`http://localhost:3000/post/getprofile/${id}`)
     setProfile(res.data.profile)
     setSeller(res.data.sellerposts)
-    console.log(res.data);
+    console.log(res);
     
   }
 useEffect(()=>{
@@ -121,11 +125,11 @@ console.log(Seller);
           {/* edit button */}
           <div className="sm:mt-4 mt-2 flex gap-4 flex-grow">
             <button 
-            onClick={()=> alert("working on it try after 2 days")}
-            className=" flex-1 px-4 py-1 border rounded-md text-base bg-blue-600 sm:text-lg font-semibold hover:bg-gray-100 dark:hover:bg-gray-800">
+            onClick={()=> console.log("hello")}
+            className=" flex-1 px-4 py-1 border rounded-md text-base sm:text-lg font-semibold bg-gray-100 dark:bg-gray-800 active:scale-95">
               Follow
             </button>
-            <button  onClick={()=> alert("working on it try after 2 days")} className="flex-1 px-4 py-1 border rounded-md text-base bg-green-600 sm:text-lg font-semibold hover:bg-gray-100 dark:hover:bg-gray-800">
+            <button  onClick={()=> console.log("world")} className="flex-1 px-4 py-1 border rounded-md text-base sm:text-lg font-semibold bg-gray-100 dark:bg-gray-800 active:scale-95">
            
               Share Profile
             </button>

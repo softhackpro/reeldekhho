@@ -62,10 +62,10 @@ export default function Post({ post }: PostProps) {
   const { addSavedPost, isSaved } = useSavedPost()
 
 
-  useEffect(() => {
-    console.log(comments);
+  // useEffect(() => {
+  //   console.log(comments);
 
-  }, comments)
+  // }, comments)
   const observerRef = useIntersectionObserver(
     () => setIsPlay(true),
     () => setIsPlay(false),

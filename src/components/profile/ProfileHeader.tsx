@@ -109,7 +109,7 @@ export default function ProfileHeader(props:any) {
                 <a href="#" className="text-blue-500 hover:underline">
                   {user?.website}
                 </a>{" "}
-                | {user?.adderess}
+                | {user?.address}
               </p>
             </div>
           </div>
