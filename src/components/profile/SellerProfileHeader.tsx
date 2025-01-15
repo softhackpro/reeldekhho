@@ -88,7 +88,7 @@ console.log(Seller);
                     </div>
                     <div>
                       <span className="block font-semibold text-gray-800 dark:text-gray-200 text-center">
-                        0
+                        {profile?.followers}
                       </span>
                       <span className="text-xs sm:text-sm text-gray-500 font-medium">
                         followers
@@ -96,7 +96,7 @@ console.log(Seller);
                     </div>
                     <div>
                       <span className="block font-semibold text-gray-800 dark:text-gray-200 text-center">
-                        0
+                      {profile?.following}
                       </span>
                       <span className="text-xs sm:text-sm text-gray-500 font-medium">
                         following
@@ -126,10 +126,10 @@ console.log(Seller);
           <div className="sm:mt-4 mt-2 flex gap-4 flex-grow">
             <button 
             onClick={()=> console.log("hello")}
-            className=" flex-1 px-4 py-1 border rounded-md text-base sm:text-lg font-semibold bg-gray-100 dark:bg-gray-800 active:scale-95">
+            className=" flex-1 px-4 py-1 border rounded-md text-base sm:text-lg font-semibold bg-gray-100 hover:bg-gray-300 dark:bg-gray-800 active:scale-95">
               Follow
             </button>
-            <button  onClick={()=> console.log("world")} className="flex-1 px-4 py-1 border rounded-md text-base sm:text-lg font-semibold bg-gray-100 dark:bg-gray-800 active:scale-95">
+            <button  onClick={()=> console.log("world")} className="flex-1 px-4 py-1 border rounded-md text-base sm:text-lg font-semibold bg-gray-100 hover:bg-gray-300 dark:bg-gray-800 active:scale-95">
            
               Share Profile
             </button>
