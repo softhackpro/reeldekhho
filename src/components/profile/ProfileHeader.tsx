@@ -6,14 +6,22 @@ import { BsChat } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { ProfileSkeloton } from "./ProfileSkeloton";
 import { useState } from "react";
+import ShareFeature from "./ShareFeature";
 
-export default function ProfileHeader(props:any) {
-  const totalposts = props.value
+export default function ProfileHeader(props: any) {
+  const totalposts = props.value;
+  const following = props.following;
+  const followers = props.followers;
   const { loading, error } = useGetProfile();
   const Navigate = useNavigate();
   const [video, setVideo] = useState(true);
+  const [isShareOpen, setIsShareOpen]= useState(false);
   const user = useSelector((state: any) => state?.auth?.user);
-  console.log(user);
+  
+  const handleShare = () => {
+    setIsShareOpen(true)
+  };
+
   if (loading) {
     return <ProfileSkeloton />;
   }
@@ -27,12 +35,12 @@ export default function ProfileHeader(props:any) {
       </>
     );
   }
-  
+
   const iconClick = async (e: any) => {
     Navigate(e);
   };
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8"> 
+    <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="max-w-screen-lg mx-auto mt-2 sm:mt-5 md:mt-10 px-4">
         {/* Profile Section */}
         <div className="flex flex-row items-center md:items-start gap-6">
@@ -82,7 +90,7 @@ export default function ProfileHeader(props:any) {
                 </div>
                 <div>
                   <span className="block font-semibold text-gray-800 dark:text-gray-200 text-center">
-                    0
+                    {followers}
                   </span>
                   <span className="text-xs sm:text-sm text-gray-500 font-medium">
                     followers
@@ -90,7 +98,7 @@ export default function ProfileHeader(props:any) {
                 </div>
                 <div>
                   <span className="block font-semibold text-gray-800 dark:text-gray-200 text-center">
-                    0
+                    {following}
                   </span>
                   <span className="text-xs sm:text-sm text-gray-500 font-medium">
                     following
@@ -105,7 +113,7 @@ export default function ProfileHeader(props:any) {
                 {user?.occupation}
               </h2>
               <p className="text-gray-600 dark:text-gray-400 sm:text-base text-xs">
-                <span>Website @. </span>
+                <span>Website @ </span>
                 <a href="#" className="text-blue-500 hover:underline">
                   {user?.website}
                 </a>{" "}
@@ -118,15 +126,25 @@ export default function ProfileHeader(props:any) {
 
       {/* edit button */}
       <div className="sm:mt-4 mt-2 flex gap-4 flex-grow">
-        <button 
-        onClick={()=> Navigate('/editProfile')}
-        className=" flex-1 px-4 py-1 border rounded-md text-base sm:text-lg font-semibold hover:bg-gray-100 dark:hover:bg-gray-800">
+        <button
+          onClick={() => Navigate("/editProfile")}
+          className=" flex-1 px-4 py-1 border rounded-md text-base sm:text-lg font-semibold hover:bg-gray-100 dark:hover:bg-gray-800"
+        >
           Edit Profile
         </button>
-        <button className="flex-1 px-4 py-1 border rounded-md text-base sm:text-lg font-semibold hover:bg-gray-100 dark:hover:bg-gray-800">
+        <button
+          onClick={handleShare}
+          className="flex-1 px-4 py-1 border rounded-md text-base sm:text-lg font-semibold hover:bg-gray-100 dark:hover:bg-gray-800 active:scale-95"
+        >
           Share Profile
         </button>
       </div>
+
+      <ShareFeature
+        isOpen={isShareOpen}
+        onClose={() => setIsShareOpen(false)}
+        profileId={user?._id}
+      />
 
       {/* Video Card Section */}
       <div className="mt-8">
@@ -134,11 +152,7 @@ export default function ProfileHeader(props:any) {
           <div className="relative w-full h-[9.5rem] sm:h-60 md:h-72 lg:h-80 overflow-hidden rounded-lg">
             {video ? (
               <video
-                src= 'https://cdn.pixabay.com/video/2023/12/03/191860-891640938_large.mp4'
-                //  {user.smallvideo || 
-                  
-
-                // }
+                src="https://cdn.pixabay.com/video/2023/12/03/191860-891640938_large.mp4"
                 autoPlay
                 loop
                 muted

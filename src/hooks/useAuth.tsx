@@ -34,6 +34,7 @@ const useAuth = (): UseAuthReturn => {
     const dispatch = useDispatch();
 
     const isLoggedIn = !!token;
+    // console.log(isLoggedIn, "useauth.tsx 37");
 
     const login = async (email: string, password: string): Promise<User | null> => {
         setLoading(true);
