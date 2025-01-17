@@ -17,7 +17,7 @@ const SearchPage = lazy(() => import('./pages/SearchPage'));
 const ExplorePage = lazy(() => import('./pages/ExplorePage'));
 const StoryViewer = lazy(() => import('./components/story/StoryViewer'));
 const SignupPage = lazy(() => import('./pages/SignupPage'));
-const Editprofile = lazy(() => import('./pages/Editprofile'))
+const Editprofile = lazy(() => import('./pages/Editprofile'));
 
 function AppContent() {
   const isDarkMode = useSelector((state: RootState) => state.theme.isDarkMode);
