@@ -39,10 +39,9 @@ export default function ReelCard({ reel }: ReelCardProps) {
   const { isLoggedIn } = useAuth();
   const [isSaved, setIsSaved] = useState(false);
   const [isVideoPlay, setIsVideoPlay] = useState(false);
-  const [isCommentOpen, setIsCommentOpen] = useState(false); // For comment popup
+  const [isCommentOpen, setIsCommentOpen] = useState(false);
   const navigate = useNavigate();
   const { isLiked, likeCount, likePost } = useHandleReelsLikes(reel._id);
-  // const { comments } = useHandleComment(reel._id)
   const { getComment, createComment, deleteComment, comments } = useHandleComment(reel._id)
   const popupRef = useRef<HTMLDivElement | null>(null);
   const [loader, setLoader] = useState({

@@ -14,6 +14,7 @@ import { BiDotsVertical } from 'react-icons/bi';
 import useSavedPost from '../hooks/post/useSavedpost';
 import GetLocation from './interactions/GetLocation';
 import { formatTimeAgo } from '../utils/dateUtils';
+import ShareButton from './ShareBtn';
 interface PostProps {
   post: {
     id: number;
@@ -60,6 +61,8 @@ export default function Post({ post }: PostProps) {
     removeLoader: false,
   })
   const { addSavedPost, isSaved } = useSavedPost()
+  const [isShareOpen, setIsShareOpen] = useState(false);
+
 
 
   useEffect(() => {
@@ -116,6 +119,7 @@ export default function Post({ post }: PostProps) {
   const handleSaved = () => {
     addSavedPost(post._id)
   }
+
   return (
     <div className=" bg-white w-[90vw] sm:w-full dark:bg-gray-800 border dark:border-gray-700 rounded-lg mb-4">
       <div className="flex items-center justify-between p-4">
@@ -191,7 +195,8 @@ export default function Post({ post }: PostProps) {
 
             {isLoggedIn ? <> <button onClick={() => setShowComments((prev) => !prev)}>
               <MessageCircle className="w-6 h-6 dark:text-white" />
-            </button> <button>
+            </button>
+              <button onClick={() => setIsShareOpen(true)}>
                 <Send className="w-6 h-6 dark:text-white" />
               </button> </> : <> <button onClick={() => navigate('/signup')}>
                 <MessageCircle className="w-6 h-6 dark:text-white" />
@@ -265,6 +270,12 @@ export default function Post({ post }: PostProps) {
             < CommentSection postId={post.id} createComment={createComment} loader={loader} setLoader={setLoader} />
           </div>
         }
+
+        <ShareButton
+          isOpen={isShareOpen}
+          onClose={() => setIsShareOpen(false)}
+          reelId={post._id}
+        />
 
       </div>
     </div>
