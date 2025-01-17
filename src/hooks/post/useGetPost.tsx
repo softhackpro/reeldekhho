@@ -14,16 +14,11 @@ const useGetPosts = () => {
         const fetchPosts = async () => {
             setLoading(true);
             try {
-                const response = await api.get('/post/get?page=' + page);
+                const excludeIds = posts.map(post => post._id).join(',');
+                const response = await api.get(`/post/get?page=${page}&excludeIds=${excludeIds}`);
                 dispatch(setPost({
-                    type: 'SET_POST', payload: response.data.posts
+                    type: 'ADD_POST', payload: response.data.posts
                 }));
-
-                console.log(response);
-                console.log(page);
-
-
-                console.log(response.data.posts);
             } catch (err) {
                 setError(err.response?.data?.message || "An error occurred");
             } finally {
@@ -36,12 +31,12 @@ const useGetPosts = () => {
         } else {
             setLoading(false);
         }
-    }, [posts?.length, dispatch]);
-
+    }, [posts?.length, dispatch, page]);
 
     const loadMorePosts = async () => {
         try {
-            const response = await api.get(`/post/get?page=${page}`);
+            const excludeIds = posts.map(post => post._id).join(',');
+            const response = await api.get(`/post/get?page=${page}&excludeIds=${excludeIds}`);
             if (response.data.posts.length > 0) {
                 dispatch(setPost({ type: 'ADD_POST', payload: response.data.posts }));
             }

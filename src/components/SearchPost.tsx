@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useIntersectionObserver } from "../hooks/useIntersectionObserver";
+import { useNavigate } from "react-router-dom";
 
 // interface PostProps {
 //     post: {
@@ -31,12 +32,13 @@ import { useIntersectionObserver } from "../hooks/useIntersectionObserver";
 // };
 
 const SearchPost = (props) => {
-    
+
     const [post, setPost] = useState(props.info)
     console.log(post, 'from search post');
     // const mediaType = identifyMediaType(post.image);
     const [isPlay, setIsPlay] = useState(false);
     const observerRef = useIntersectionObserver(() => setIsPlay(true), () => setIsPlay(false), { threshold: 0.6 });
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (observerRef.current) {
@@ -52,35 +54,35 @@ const SearchPost = (props) => {
 
     return (
         <>
-        {post.map(value => (
-        <div key={value._id} className=" overflow-hidden rounded-lg mb-2 relative h-fit cursor-pointer">
-            {value.file.fileType === 'mp4' ? (
-                <video
-                    ref={observerRef}
-                    muted
-                    autoPlay={isPlay}
-                    loop
-                    className="w-full h-auto object-cover"
-                >
-                    <source src={value.file.url} type="video/mp4" />
-                    Your browser does not support the video tag.
-                </video>
-            ) : (
-                <img
-                    src={value.file.url}
-                    alt=""
-                    className="w-full h-auto object-cover"
-                />
-            )}
+            {post.map(value => (
+                <div onClick={() => navigate(`/reels/${value._id}`)} key={value._id} className=" overflow-hidden rounded-lg mb-2 relative h-fit cursor-pointer">
+                    {value.file.fileType === 'mp4' ? (
+                        <video
+                            ref={observerRef}
+                            muted
+                            autoPlay={isPlay}
+                            loop
+                            className="w-full h-auto object-cover"
+                        >
+                            <source src={value.file.url} type="video/mp4" />
+                            Your browser does not support the video tag.
+                        </video>
+                    ) : (
+                        <img
+                            src={value.file.url}
+                            alt=""
+                            className="w-full h-auto object-cover"
+                        />
+                    )}
 
-            <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all flex items-center justify-center opacity-0 group-hover:opacity-100">
-                <div className="text-white flex space-x-4">
-                    <span>❤️ {post.likes}</span>
-                    <span>💬 {post.comments}</span>
+                    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all flex items-center justify-center opacity-0 group-hover:opacity-100">
+                        <div className="text-white flex space-x-4">
+                            <span>❤️ {post.likes}</span>
+                            <span>💬 {post.comments}</span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        ))}
+            ))}
         </>
     );
 }

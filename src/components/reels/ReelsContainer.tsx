@@ -11,48 +11,7 @@ export default function ReelsContainer() {
 
   const containerRef = useRef<HTMLDivElement>(null);
   const reelRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const currentReelIndex = useRef<number>(0);
 
-  const scrollToReel = (index: number) => {
-    const reel = reelRefs.current[index];
-    if (reel) {
-      reel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        let visibleReelIndex = -1;
-
-        // Find the first visible reel
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const index = reelRefs.current.findIndex((reel) => reel === entry.target);
-            if (index !== -1) {
-              visibleReelIndex = index;
-            }
-          }
-        });
-
-        if (visibleReelIndex !== -1 && visibleReelIndex !== currentReelIndex.current) {
-          currentReelIndex.current = visibleReelIndex;
-          scrollToReel(visibleReelIndex);
-        }
-      },
-      {
-        threshold: 0.6,
-      }
-    );
-
-    reelRefs.current.forEach((reel) => {
-      if (reel) observer.observe(reel);
-    });
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [reels]);
 
   const lastDiv = useIntersectionObserver(
     () => loadReels(),

@@ -14,6 +14,7 @@ import { BiDotsVertical } from 'react-icons/bi';
 import useSavedPost from '../hooks/post/useSavedpost';
 import GetLocation from './interactions/GetLocation';
 import { formatTimeAgo } from '../utils/dateUtils';
+import ShareButton from './ShareBtn';
 interface PostProps {
   post: {
     id: number;
@@ -60,6 +61,8 @@ export default function Post({ post }: PostProps) {
     removeLoader: false,
   })
   const { addSavedPost, isSaved } = useSavedPost()
+  const [isShareOpen, setIsShareOpen] = useState(false);
+
 
 
   // useEffect(() => {
@@ -116,8 +119,9 @@ export default function Post({ post }: PostProps) {
   const handleSaved = () => {
     addSavedPost(post._id)
   }
+
   return (
-    <div className="solveissue bg-white w-[90vw] sm:w-full dark:bg-gray-800 border dark:border-gray-700 rounded-lg mb-4">
+    <div className=" bg-white w-[90vw] sm:w-full dark:bg-gray-800 border dark:border-gray-700 rounded-lg mb-4">
       <div className="flex items-center justify-between p-4">
         <Link to={`/seller/${post.user._id}`} className="flex items-center space-x-2">
           <img
@@ -131,25 +135,25 @@ export default function Post({ post }: PostProps) {
           <MoreVertical className="cursor-pointer" />
         </button>
       </div>
-      <p className="dark:text-white" style={{paddingLeft:'12px', paddingBottom:'8px', marginTop:'-8px'}}>
-            <span className="font-semibold">
-              {/* {post.user.fullName} */}
-              </span> {post.caption}
-          </p>
+      <p className="dark:text-white" style={{ paddingLeft: '12px', paddingBottom: '8px', marginTop: '-8px' }}>
+        <span className="font-semibold">
+          {/* {post.user.fullName} */}
+        </span> {post.caption}
+      </p>
       <div className="relative">
-      
+
         {mediaType === 'video' ? (
           <div
             onClick={() => setIsPlay(false)}
             onDoubleClick={handleLike}
             className="relative min-w-full bg-black sm:min-w-96"
           >
-            <video ref={observerRef} className="w-full max-h-[60vh]" muted={isMute} loop autoPlay={isPlay}>
+            <video onClick={() => navigate(`/reels/${post._id}`)} ref={observerRef} className="w-full max-h-[60vh]" muted={isMute} loop autoPlay={isPlay}>
               <source src={post.file.url} type={`video/${post.file.fileType}`} />
               Your browser does not support the video tag.
             </video>
             <div
-              className="absolute bottom-2 right-2 z-30"
+              className="absolute p-4 bottom-2 right-2 z-50"
               onClick={handleMute}
             >
               {!isMute ? (
@@ -161,6 +165,7 @@ export default function Post({ post }: PostProps) {
           </div>
         ) : (
           <img
+            onClick={() => navigate(`/reels/${post._id}`)}
             onDoubleClick={handleLike}
             src={post.file.url}
             alt="Post Media"
@@ -179,7 +184,7 @@ export default function Post({ post }: PostProps) {
               <Heart
                 className={`w-6 h-6 ${isLiked ? 'text-red-500 fill-current' : 'dark:text-white'}`}
               />
-            </button> <span style={{marginLeft:'6px', fontSize:'17px'}} className=" dark:text-white">{likes} {likes > 1 ? "Likes" : "Like"}</span> </> : <> <button
+            </button> <span style={{ marginLeft: '6px', fontSize: '17px' }} className=" dark:text-white">{likes} {likes > 1 ? "Likes" : "Like"}</span> </> : <> <button
               onClick={() => navigate('/signup')}
               className="transform active:scale-125 transition-transform duration-200"
             >
@@ -190,7 +195,8 @@ export default function Post({ post }: PostProps) {
 
             {isLoggedIn ? <> <button onClick={() => setShowComments((prev) => !prev)}>
               <MessageCircle className="w-6 h-6 dark:text-white" />
-            </button> <button>
+            </button>
+              <button onClick={() => setIsShareOpen(true)}>
                 <Send className="w-6 h-6 dark:text-white" />
               </button> </> : <> <button onClick={() => navigate('/signup')}>
                 <MessageCircle className="w-6 h-6 dark:text-white" />
@@ -200,7 +206,7 @@ export default function Post({ post }: PostProps) {
             { }
 
           </div>
-          {post.createdAt ? <GetLocation createdDate = {post.createdAt}/>: null} 
+          {post.createdAt ? <GetLocation createdDate={post.createdAt} /> : null}
           {/* {isLoggedIn ? <button onClick={handleSaved}>
             <Bookmark className={`w-6 h-6 ${isSaved ? 'fill-current' : ''} dark:text-white`} />
           </button> : <button onClick={() => window.location.href = '/signup'}>
@@ -223,9 +229,9 @@ export default function Post({ post }: PostProps) {
             View all comments
           </button>
           <p className="text-gray-400 text-xs uppercase">
-    {formatTimeAgo(post.createdAt)}
-  </p>
-          </div>
+            {formatTimeAgo(post.createdAt)}
+          </p>
+        </div>
 
 
         {showComments &&
@@ -264,6 +270,12 @@ export default function Post({ post }: PostProps) {
             < CommentSection postId={post.id} createComment={createComment} loader={loader} setLoader={setLoader} />
           </div>
         }
+
+        <ShareButton
+          isOpen={isShareOpen}
+          onClose={() => setIsShareOpen(false)}
+          reelId={post._id}
+        />
 
       </div>
     </div>
