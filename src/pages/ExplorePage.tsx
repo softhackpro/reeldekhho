@@ -3,10 +3,11 @@ import SearchPost from '../components/SearchPost';
 import { useEffect, useState } from 'react';
 import HeaderStatic from '../components/HeaderStatic'
 export default function ExplorePage() {
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  // const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [info, setInfo] = useState (false)
   const fetchposts = async() =>{
-    const res = await axios.get(`${backendUrl}/post/getsearchresult`)
+    // const res = await axios.get(`${backendUrl}/post/getsearchresult`)
+    const res = await axios.get(`http://localhost:3000/post/getsearchresult`)
     setInfo(res.data)
   }
 useEffect(()=>{

@@ -10,7 +10,7 @@ import AddProduct from './pages/AddProduct';
 import Faq from './components/Faq/Faq';
 import Saved from './components/Faq/Saved';
 import Page from './components/Faq/Page';
-
+import SearchReels from './components/SearchReels';
 const Feed = lazy(() => import('./components/Feed'));
 const ReelsPage = lazy(() => import('./pages/ReelsPage'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
@@ -20,7 +20,7 @@ const SearchPage = lazy(() => import('./pages/SearchPage'));
 const ExplorePage = lazy(() => import('./pages/ExplorePage'));
 const StoryViewer = lazy(() => import('./components/story/StoryViewer'));
 const SignupPage = lazy(() => import('./pages/SignupPage'));
-const Editprofile = lazy(() => import('./pages/Editprofile'))
+const Editprofile = lazy(() => import('./pages/Editprofile'));
 
 function AppContent() {
   const isDarkMode = useSelector((state: RootState) => state.theme.isDarkMode);
@@ -66,6 +66,7 @@ function AppContent() {
               <Route path="/faq" element={<Faq />} />
               <Route path="/saved" element={<Saved />} />
               <Route path="/page/:id" element={<Page />} />
+              <Route path='/reels/:id' element={<SearchReels />} />
             </Route>
           </Routes>
         </Suspense>
