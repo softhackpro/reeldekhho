@@ -28,7 +28,7 @@ export default function Feed() {
       <HeaderStatic />
       <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-3 margintopo">
 
-        {/* Posts Area */}
+        {/* Posts Area */} 
         <div className=" lg:col-span-2 mx-auto md:mt-0 max-w-2xl">
 
           <Suspense
