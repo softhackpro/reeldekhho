@@ -7,13 +7,14 @@ import Layout from './components/layout/Layout';
 import { Suspense, lazy, useEffect, useState } from 'react';
 import MessagesPage from './pages/MessagePage';
 import AddProduct from './pages/AddProduct';
+import Faq from './components/Faq/Faq';
+import Saved from './components/Faq/Saved';
+import Page from './components/Faq/Page';
 import SearchReels from './components/SearchReels';
 import Socketwindow from './components/socket';
 import api from './services/api/axiosConfig';
 import { setUserProfile } from './store/slices/authSlice';
 import { FiExternalLink } from 'react-icons/fi';
-
-
 const Feed = lazy(() => import('./components/Feed'));
 const ReelsPage = lazy(() => import('./pages/ReelsPage'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
@@ -70,6 +71,9 @@ function AppContent() {
               <Route path="/messages/:id" element={<MessagesPage />} />
               <Route path="/messages" element={<MessagesPage />} />
               <Route path="/add-product" element={<AddProduct />} />
+              <Route path="/faq" element={<Faq />} />
+              <Route path="/saved" element={<Saved />} />
+              <Route path="/page/:id" element={<Page />} />
               <Route path='/reels/:id' element={<SearchReels />} />
             </Route>
           </Routes>
