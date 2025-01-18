@@ -15,7 +15,7 @@ export default function Profile() {
 
   const user = useSelector((state: any) => state?.auth?.user);
 
-  const { followError ,followLoading, following,followers }= useFollow()
+  const { followError, followLoading, following, followers } = useFollow()
   const { loading, error } = useGetPost();
   const posts = useSelector((state: any) => state.auth.posts || []); // Default to an empty array
 
@@ -26,13 +26,13 @@ export default function Profile() {
     return <ProfilePostSkeloton />;
   }
 
-  if (error || followError) {
-    return <div>Error: {error}</div>;
-  }
+  // if (error || followError) {
+  //   return <div>Error: {error}</div>;
+  // }
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
-      <ProfileHeader value={posts.length || 0} following={following.length} followers={followers.length}/> {/* Handle undefined posts */}
+      <ProfileHeader value={posts.length || 0} following={following.length} followers={followers.length} /> {/* Handle undefined posts */}
       <PostGrid posts={posts} />
     </div>
   );
