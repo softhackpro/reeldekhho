@@ -64,4 +64,7 @@
     width: 100vw;
     position: relative !important;
   }
+  .objectcovernow{
+    object-fit: cover;
+  }
 }

@@ -121,7 +121,7 @@ export default function Post({ post }: PostProps) {
   }
 
   return (
-    <div className="solveissue bg-white w-[90vw] sm:w-full dark:bg-gray-800 border dark:border-gray-700 rounded-lg mb-4">
+    <div className="solveissue bg-white w-[90vw] sm:w-full dark:bg-gray-800 border dark:border-gray-700 rounded-lg">
       <div className="flex items-center justify-between p-4">
         <Link to={`/seller/${post.user._id}`} className="flex items-center space-x-2">
           <img
@@ -147,8 +147,9 @@ export default function Post({ post }: PostProps) {
             onClick={() => setIsPlay(false)}
             onDoubleClick={handleLike}
             className="relative min-w-full bg-black sm:min-w-96"
+
           >
-            <video onClick={() => navigate(`/reels/${post._id}`)} ref={observerRef} className="w-full max-h-[60vh]" muted={isMute} loop autoPlay={isPlay}>
+            <video onClick={() => navigate(`/reels/${post._id}`)} ref={observerRef} className="w-full max-h-[60vh] objectcovernow" muted={isMute} loop autoPlay={isPlay}>
               <source src={post.file.url} type={`video/${post.file.fileType}`} />
               Your browser does not support the video tag.
             </video>

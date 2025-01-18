@@ -38,7 +38,7 @@ export default function Feed() {
               </div>
             }
           >
-            <div className="space-y-8">
+            <div className=""> 
               {posts?.length > 0 ? (
                 posts.map((post) => <Post key={post._id} post={post} />)
               ) : (
