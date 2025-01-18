@@ -12,6 +12,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.1",
     "axios": "^1.7.9",
+    "dompurify": "^3.2.3",
     "install": "^0.13.0",
     "lucide-react": "^0.344.0",
     "npm": "^11.0.0",

@@ -7,8 +7,10 @@ import Layout from './components/layout/Layout';
 import { Suspense, lazy } from 'react';
 import MessagesPage from './pages/MessagePage';
 import AddProduct from './pages/AddProduct';
+import Faq from './components/Faq/Faq';
+import Saved from './components/Faq/Saved';
+import Page from './components/Faq/Page';
 import SearchReels from './components/SearchReels';
-
 const Feed = lazy(() => import('./components/Feed'));
 const ReelsPage = lazy(() => import('./pages/ReelsPage'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
@@ -61,6 +63,9 @@ function AppContent() {
               <Route path="/seller/:id" element={<SellerProfile />} />
               <Route path="/messages" element={<MessagesPage />} />
               <Route path="/add-product" element={<AddProduct />} />
+              <Route path="/faq" element={<Faq />} />
+              <Route path="/saved" element={<Saved />} />
+              <Route path="/page/:id" element={<Page />} />
               <Route path='/reels/:id' element={<SearchReels />} />
             </Route>
           </Routes>
