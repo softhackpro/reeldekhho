@@ -26,7 +26,7 @@ export default function Profile() {
     return <ProfilePostSkeloton />;
   }
 
-  if (error || followError) {
+  if (error) {
     return <div>Error: {error}</div>;
   }
 

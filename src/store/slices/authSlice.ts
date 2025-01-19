@@ -30,11 +30,19 @@ const authSlice = createSlice({
     setUserPost: (state, actions) => {
       state.posts = actions.payload;
     },
+    updateParticularPost: (state, action) => {
+      state.posts[action.payload.index]= action.payload.post 
+    },
+    updateMyPosts: (state, action) => {
+      if(state.posts){
+        state.posts= [ ...state.posts, action.payload ]
+      }
+    },
     setUserMute: (state, action) => {
       state.isMute = action.payload
     }
   },
 });
 
-export const { setUserProfile, setUserPost, setUserMute } = authSlice.actions;
+export const { setUserProfile, setUserPost, updateParticularPost,updateMyPosts, setUserMute } = authSlice.actions;
 export default authSlice.reducer;

@@ -4,6 +4,9 @@ import useUploadFile from '../hooks/addPost/useUploadFile';
 import useAddPost from '../hooks/addPost/useAddPost';
 import useAuth from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { updateMyPosts } from '../store/slices/authSlice';
+
 interface ProductForm {
   productName: string;
   price: string;
@@ -22,6 +25,7 @@ interface UploadProgressProps {
 }
 
 function UploadProgress({ progress }: UploadProgressProps) {
+
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
   if (!isLoggedIn) {
@@ -46,6 +50,8 @@ function UploadProgress({ progress }: UploadProgressProps) {
 }
 
 const AddProduct: React.FC = () => {
+  const dispatch= useDispatch();
+
   const [file, setFile] = useState<File | null>(null);
   const [formData, setFormData] = useState<ProductForm>({
     productName: '',
@@ -141,6 +147,9 @@ const AddProduct: React.FC = () => {
     }
 
     const success = await addPost(formData);
+    dispatch(updateMyPosts(success));
+
+    console.log("add product success: ",success);
     if (success) {
       alert('Product added successfully');
       setFormData({
