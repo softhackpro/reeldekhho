@@ -3,11 +3,11 @@ import { useEffect, useState } from 'react';
 import HeaderStatic from '../components/HeaderStatic'
 import api from '../services/api/axiosConfig';
 export default function ExplorePage() {
-  // const backendUrl = import.meta.env.VITE_BACKEND_URL;
-  const [info, setInfo] = useState(false)
-  const fetchposts = async () => {
-    // const res = await axios.get(`${backendUrl}/post/getsearchresult`)
-    const res = await api.get(`/post/getsearchresult`)
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const [info, setInfo] = useState (false)
+  const fetchposts = async() =>{
+    const res = await axios.get(`${backendUrl}/post/getsearchresult`)
+
     setInfo(res.data)
   }
   useEffect(() => {
