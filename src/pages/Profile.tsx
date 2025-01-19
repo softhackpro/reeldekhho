@@ -26,9 +26,9 @@ export default function Profile() {
     return <ProfilePostSkeloton />;
   }
 
-  // if (error || followError) {
-  //   return <div>Error: {error}</div>;
-  // }
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">

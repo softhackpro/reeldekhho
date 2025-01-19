@@ -1,12 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+
+const initialState = {
+    posts: [],
+    likes: [],
+    page: 1
+}
 const postSlices = createSlice({
     name: 'post',
-    initialState: {
-        posts: [],
-        likes: [],
-        page: 1
-    },
+    initialState,
     reducers: {
         setPost(state, action) {
             const { type, payload } = action.payload;

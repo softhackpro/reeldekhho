@@ -1,6 +1,5 @@
 import { MapPin, FilePlus, Loader2Icon, Check } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
-import { FaUserMinus } from 'react-icons/fa';
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";

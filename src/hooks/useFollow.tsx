@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../services/api/axiosConfig";
+import toast from "react-hot-toast";
 
 const useFollow = () => {
   const [followLoading, setFollowLoading] = useState(false);
@@ -21,7 +22,7 @@ const useFollow = () => {
       setFollowers(followers);
       setFollowError(false); // Reset error state on success
     } catch (err: any) {
-      console.error("Error fetching follow data:", err.message || err);
+      console.error("Error fetching follow data:", err);
       setFollowError(true);
     } finally {
       setFollowLoading(false);
@@ -37,8 +38,9 @@ const useFollow = () => {
 
       getFollowData();
 
-    } catch (error) {
+    } catch (error:any) {
       console.log(error);
+      alert(error.response.data.message || "Error in following")
     }
   }
 

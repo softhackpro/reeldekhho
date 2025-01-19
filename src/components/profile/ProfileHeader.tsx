@@ -12,8 +12,11 @@ export default function ProfileHeader(props: any) {
   const totalposts = props.value;
   const following = props.following;
   const followers = props.followers;
+
   const { loading, error } = useGetProfile();
+  
   const Navigate = useNavigate();
+
   const [video, setVideo] = useState(true);
   const [isShareOpen, setIsShareOpen]= useState(false);
   const user = useSelector((state: any) => state?.auth?.user);
@@ -90,7 +93,7 @@ export default function ProfileHeader(props: any) {
                 </div>
                 <div>
                   <span className="block font-semibold text-gray-800 dark:text-gray-200 text-center">
-                    {followers}
+                    {followers || 0}
                   </span>
                   <span className="text-xs sm:text-sm text-gray-500 font-medium">
                     followers
@@ -98,7 +101,7 @@ export default function ProfileHeader(props: any) {
                 </div>
                 <div>
                   <span className="block font-semibold text-gray-800 dark:text-gray-200 text-center">
-                    {following}
+                    {following || 0}
                   </span>
                   <span className="text-xs sm:text-sm text-gray-500 font-medium">
                     following
