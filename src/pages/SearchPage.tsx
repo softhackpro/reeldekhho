@@ -84,6 +84,7 @@ const indianCities = [
 export default function SearchPage() {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [info, setInfo] = useState (false)
+  const [city, setCity] = useState ([])
   const [Loading, setLoading] = useState(false)
   const fetchposts = async() =>{
     const res = await axios.get(`${backendUrl}/post/getsearchresult`)
@@ -93,6 +94,16 @@ export default function SearchPage() {
   }
 useEffect(()=>{
   fetchposts()
+},[])
+const fetchcity = async() =>{
+  const res = await axios.get(`${backendUrl}/post/getcitylist`)
+  console.log(res.data, 'city list');
+  
+  setCity(res.data.value);
+  
+}
+useEffect(()=>{
+  fetchcity ()
 },[])
   return (
     <>
@@ -116,9 +127,9 @@ useEffect(()=>{
             <option value="" disabled selected>
               Select a City
             </option>
-            {indianCities.map((city) => (
-              <option key={city.value} value={city.value}>
-                {city.label}
+            {city.map((item) => (
+              <option key={item._id} value={item.city}>
+                {item.city}
               </option>
             ))}
           </select>

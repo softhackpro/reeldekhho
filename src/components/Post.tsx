@@ -28,6 +28,8 @@ interface PostProps {
     user: {
       fullName: string;
       profilePicture: string;
+      // longitude: string;
+      // lattitude:string;
     };
     createdAt: string;
   };
@@ -119,9 +121,9 @@ export default function Post({ post }: PostProps) {
   const handleSaved = () => {
     addSavedPost(post._id)
   }
-
+  
   return (
-    <div className="solveissue bg-white w-[90vw] sm:w-full dark:bg-gray-800 border dark:border-gray-700 rounded-lg">
+    <div key={post._id} className="solveissue bg-white w-[90vw] sm:w-full dark:bg-gray-800 border dark:border-gray-700 rounded-lg">
       <div className="flex items-center justify-between p-4">
         <Link to={`/seller/${post.user._id}`} className="flex items-center space-x-2">
           <img
@@ -207,7 +209,7 @@ export default function Post({ post }: PostProps) {
             { }
 
           </div>
-          {post.createdAt ? <GetLocation createdDate={post.createdAt} /> : null}
+          {post.createdAt ? <GetLocation createdDate={post.createdAt} longitude={post.user.longitude} lattitude={post.user.lattitude} /> : null}
           {/* {isLoggedIn ? <button onClick={handleSaved}>
             <Bookmark className={`w-6 h-6 ${isSaved ? 'fill-current' : ''} dark:text-white`} />
           </button> : <button onClick={() => window.location.href = '/signup'}>
