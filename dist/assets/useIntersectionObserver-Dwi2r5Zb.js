@@ -1,1 +1,0 @@
-import{r as o}from"./index-4-6_qnaC.js";function f(r=()=>{},s=()=>{},t={threshold:.1}){const e=o.useRef(null);return o.useEffect(()=>{const n=new IntersectionObserver(([u])=>{u.isIntersecting?r():s()},t);return e.current&&n.observe(e.current),()=>n.disconnect()},[r,s,t]),e}export{f as u};

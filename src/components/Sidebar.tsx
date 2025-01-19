@@ -16,7 +16,7 @@ export default function Sidebar() {
 
           <NavItem to="/" icon={<Home />} label="Home" active={location.pathname === '/'} />
           <NavItem to="/search" icon={<Search />} label="Search" />
-          <NavItem to="/explore" icon={<Compass />} label="Explore" />
+          {/* <NavItem to="/explore" icon={<Compass />} label="Explore" /> */}
           <NavItem to="/reels" icon={<Film />} label="Reels" active={location.pathname === '/reels'} />
           {/* <NavItem to="/messages" icon={<MessageCircle />} label="Messages" /> */}
           {/* <NavItem to="/notifications" icon={<Heart />} label="Notifications" /> */}
