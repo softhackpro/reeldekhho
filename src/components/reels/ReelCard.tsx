@@ -116,13 +116,13 @@ export default function ReelCard({ reel }: ReelCardProps) {
   return (
     <div
       onClick={handleReelsClick}
-      className="reel relative z-10 h-[100dvh] bg-black bg-inherit w-full snap-start overflow-hidden"
+      className="reel relative z-10 h-[100dvh] bg-black bg-inherit w-full bg-contain bg-center snap-start overflow-hidden"
     >
       {reel.file.url.includes('image/') ? (
         <img
           src={reel.file.url}
           alt={reel.caption || 'Reel Image'}
-          className="w-full h-full object-cover"
+          className=" w-full h-full object-cover"
           loading="lazy"
         />
       ) : (
@@ -130,7 +130,7 @@ export default function ReelCard({ reel }: ReelCardProps) {
           ref={videoRef}
           key={reel._id}
           src={reel.file.url}
-          className="w-full h-full"
+          className="w-full h-full "
           loop
           playsInline
         />

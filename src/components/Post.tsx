@@ -51,7 +51,6 @@ export default function Post({ post }: PostProps) {
   const navigate = useNavigate();
   const { isLoggedIn } = useAuth();
   const [isPlay, setIsPlay] = useState(true);
-  // const [isSaved, setIsSaved] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const { likeCount: likes, isLiked, likePost } = useHandleLikes(post._id);
   const isMute = useSelector(state => state.auth.isMute);
@@ -65,12 +64,6 @@ export default function Post({ post }: PostProps) {
   const { addSavedPost, isSaved } = useSavedPost()
   const [isShareOpen, setIsShareOpen] = useState(false);
 
-
-
-  // useEffect(() => {
-  //   console.log(comments);
-
-  // }, comments)
   const observerRef = useIntersectionObserver(
     () => setIsPlay(true),
     () => setIsPlay(false),
@@ -101,7 +94,6 @@ export default function Post({ post }: PostProps) {
       setShowPopup(false);
       setLoader((prev) => ({ ...prev, removeLoader: false }));
     }
-
   };
 
   useEffect(() => {
@@ -121,9 +113,9 @@ export default function Post({ post }: PostProps) {
   const handleSaved = () => {
     addSavedPost(post._id)
   }
-  
+
   return (
-    <div key={post._id} className="solveissue bg-white w-[90vw] sm:w-full dark:bg-gray-800 border dark:border-gray-700 rounded-lg">
+    <div key={post._id} className="solveissue max-w-lg bg-white w-[90vw] sm:w-full dark:bg-gray-800 border dark:border-gray-700 rounded-lg">
       <div className="flex items-center justify-between p-4">
         <Link to={`/seller/${post.user._id}`} className="flex items-center space-x-2">
           <img
@@ -135,7 +127,7 @@ export default function Post({ post }: PostProps) {
         </Link>
         <button className="dark:text-white">
           <MoreVertical className="cursor-pointer" />
-        </button> 
+        </button>
       </div>
       <p className="dark:text-white" style={{ paddingLeft: '12px', paddingBottom: '8px', marginTop: '-8px' }}>
         <span className="font-semibold">

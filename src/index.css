@@ -42,25 +42,28 @@
 .containeritem {
   margin-bottom: 15px;
 }
-.fixedtio{
+
+.fixedtio {
   position: relative;
 }
-.margintopo{
+
+.margintopo {
   margin-top: 3px;
 }
-.solveissue{
-  max-width: 30vw;
-}
+
+
 @media (max-width: 700px) {
   .fixedtio {
     position: fixed;
   }
 }
+
 @media (max-width: 700px) {
   .margintopo {
     margin-top: 55px;
   }
-  .solveissue{
+
+  .solveissue {
     padding: 0;
     margin-left: 0px !important;
     left: 0;
@@ -68,7 +71,8 @@
     position: relative !important;
     max-width: 100vw;
   }
-  .objectcovernow{
+
+  .objectcovernow {
     object-fit: cover;
   }
 }
