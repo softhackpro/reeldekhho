@@ -17,18 +17,13 @@ export default function Profile() {
 
   const { followError, followLoading, following, followers } = useFollow()
   const { loading, error } = useGetPost();
-  const posts = useSelector((state: any) => state.auth.posts || []); // Default to an empty array
+  const posts = useSelector((state: any) => state.auth.posts || []);
 
-  console.log(posts, 'aa ja bro');
-  console.log(following, 'mat aa bro')
 
   if (loading || followLoading) {
     return <ProfilePostSkeloton />;
   }
 
-  // if (error || followError) {
-  //   return <div>Error: {error}</div>;
-  // }
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">

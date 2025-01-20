@@ -40,7 +40,7 @@ export default function Feed() {
           >
             <div className="space-y-8">
               {posts?.length > 0 ? (
-                posts.map((post) => <Post key={post._id} post={post} />)
+                posts.map((post, index) => <Post key={index} post={post} />)
               ) : (
                 <div className="text-center text-gray-500">No posts available</div>
               )}

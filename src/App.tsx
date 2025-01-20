@@ -14,6 +14,7 @@ import SearchReels from './components/SearchReels';
 import Socketwindow from './components/socket';
 import api from './services/api/axiosConfig';
 import { setUserProfile } from './store/slices/authSlice';
+
 const Feed = lazy(() => import('./components/Feed'));
 const ReelsPage = lazy(() => import('./pages/ReelsPage'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
