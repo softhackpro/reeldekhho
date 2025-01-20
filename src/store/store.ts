@@ -4,7 +4,6 @@ import themeReducer from './slices/themeSlice';
 import chatReducer from './slices/chatSlice';
 import postSlices from './slices/postSlices'
 import savedPostSlice from './slices/savedPost'
-import postSlices from './slices/postSlices';
 import socketReducer from './slices/socketSlices';
 
 export const store = configureStore({
