@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { Heart, MessageCircle, Send, Bookmark, MoreVertical } from 'lucide-react';
+import { Heart, MessageCircle, Send, Bookmark, MoreVertical, BookmarkX, Flag } from 'lucide-react';
 import { IoVolumeMute } from 'react-icons/io5';
 import { GoUnmute } from 'react-icons/go';
 import CommentSection from './interactions/CommentSection';
@@ -15,6 +15,7 @@ import useSavedPost from '../hooks/post/useSavedpost';
 import GetLocation from './interactions/GetLocation';
 import { formatTimeAgo } from '../utils/dateUtils';
 import ShareButton from './ShareBtn';
+import api from '../services/api/axiosConfig';
 interface PostProps {
   post: {
     id: number;
@@ -51,17 +52,42 @@ export default function Post({ post }: PostProps) {
   const navigate = useNavigate();
   const { isLoggedIn } = useAuth();
   const [isPlay, setIsPlay] = useState(true);
+  const [showMoreOptions, setShowMoreOptions] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const { likeCount: likes, isLiked, likePost } = useHandleLikes(post._id);
   const isMute = useSelector(state => state.auth.isMute);
   const dispatch = useDispatch();
   const { getComment, createComment, deleteComment, comments } = useHandleComment(post._id)
+
   const popupRef = useRef<HTMLDivElement | null>(null);
+  const moreOptionsRef = useRef<HTMLDivElement>(null);
+
   const [loader, setLoader] = useState({
     addLoader: false,
     removeLoader: false,
   })
-  const { addSavedPost, isSaved } = useSavedPost()
+
+  const { addSavedPost, getSavedPosts, removeSavedPost } = useSavedPost()
+  const savedPost = useSelector((state) => state.savedPosts.saved_Posts)
+  // console.log(savedPost);
+  // console.log(post);
+  
+  
+
+  useEffect(() => {
+    const value = savedPost.find((save: any) => save.postId._id === post._id)
+    console.log(savedPost,post._id);
+    
+    console.log('useeffect ran',value);
+    
+    if (value) {
+      setIsSaved(true);
+    }else{
+      setIsSaved(false);
+    }
+  }, [savedPost])
+
   const [isShareOpen, setIsShareOpen] = useState(false);
 
   const observerRef = useIntersectionObserver(
@@ -109,12 +135,49 @@ export default function Post({ post }: PostProps) {
     };
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (moreOptionsRef.current && !moreOptionsRef.current.contains(event.target as Node)) {
+        setShowMoreOptions(false);
+      }
+    };
 
-  const handleSaved = () => {
-    addSavedPost(post._id)
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleSave = () => {
+    addSavedPost(post._id);
+    setShowMoreOptions(false);
+  }
+
+  const handleUnsave = () => {
+    removeSavedPost(post._id);
+    setShowMoreOptions(false);
+  }
+
+  const handleReport = async() => {
+    try{
+      const response= await api.post(`/post/report-post?id=${post._id}`);
+      console.log(response.data); 
+    }catch(error) {
+      console.log(error)
+      alert(error.response.data.message || "Something went wrong!");
+    }finally{
+      setShowMoreOptions(false);
+    }
+    
+  };
+
+  const toggleMoreOption = () => {
+    setShowMoreOptions(!showMoreOptions)
   }
 
   return (
+    <div className=" bg-white w-[90vw] sm:w-full dark:bg-gray-800 border dark:border-gray-700 rounded-lg mb-4">
+      <div className="flex items-center justify-between p-4 relative">
     <div key={post._id} className="solveissue max-w-lg bg-white w-[90vw] sm:w-full dark:bg-gray-800 border dark:border-gray-700 rounded-lg">
       <div className="flex items-center justify-between p-4">
         <Link to={`/seller/${post.user._id}`} className="flex items-center space-x-2">
@@ -125,9 +188,46 @@ export default function Post({ post }: PostProps) {
           />
           <span className="font-semibold dark:text-white">{post.user.fullName}</span>
         </Link>
-        <button className="dark:text-white">
+        <button
+          onClick={toggleMoreOption}
+          className="dark:text-white"
+        >
           <MoreVertical className="cursor-pointer" />
         </button>
+
+        {showMoreOptions && (
+          <div
+            ref={moreOptionsRef}
+            className="absolute top-0 right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg z-50 border dark:border-gray-700"
+          >
+            <div className="py-1">
+              {
+                isSaved ?
+                  <button
+                    onClick={handleUnsave}
+                    className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                  >
+                    <BookmarkX className="w-5 h-5 mr-2"/>
+                    UnSave
+                  </button> :
+                  <button
+                    onClick={handleSave}
+                    className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+                  >
+                    <Bookmark className="w-5 h-5 mr-2" />
+                    Save
+                  </button>
+              }
+              <button
+                onClick={handleReport}
+                className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
+              >
+                <span className="material-icons-outlined text-lg mr-2"><Flag className='w-5 h-5'/></span>
+                Report
+              </button>
+            </div>
+          </div>
+        )}
       </div>
       <p className="dark:text-white" style={{ paddingLeft: '12px', paddingBottom: '8px', marginTop: '-8px' }}>
         <span className="font-semibold">

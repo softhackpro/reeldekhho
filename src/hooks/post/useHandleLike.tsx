@@ -33,8 +33,6 @@ const useHandleLikes = (postId) => {
                     })
                 );
 
-                console.log("hello I am aniket like ", response);
-
             } catch (err) {
                 setError(err?.response?.data?.message || 'Something went wrong');
             } finally {

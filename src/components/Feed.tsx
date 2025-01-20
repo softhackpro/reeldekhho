@@ -1,8 +1,10 @@
-import { lazy, Suspense, useCallback } from 'react';
+
+import { lazy, Suspense, useCallback, useEffect } from 'react';
 import Suggestions from './Suggestions';
 import useGetPosts from '../hooks/post/useGetPost';
 import { useSelector } from 'react-redux';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
+import useSavedPost from '../hooks/post/useSavedpost';
 import HeaderStatic from './HeaderStatic';
 const Post = lazy(() => import('./Post'));
 
@@ -62,6 +64,11 @@ export default function Feed() {
     () => { },
     { threshold: 0.3 }
   );
+  const { getSavedPosts } = useSavedPost()
+
+  useEffect(() => {
+    getSavedPosts();
+  }, [])
 
   if (loading) {
     return <LoaderSkeloton />;
