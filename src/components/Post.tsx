@@ -72,18 +72,18 @@ export default function Post({ post }: PostProps) {
   const savedPost = useSelector((state) => state.savedPosts.saved_Posts)
   // console.log(savedPost);
   // console.log(post);
-  
-  
+
+
 
   useEffect(() => {
     const value = savedPost.find((save: any) => save.postId._id === post._id)
-    console.log(savedPost,post._id);
-    
-    console.log('useeffect ran',value);
-    
+    console.log(savedPost, post._id);
+
+    console.log('useeffect ran', value);
+
     if (value) {
       setIsSaved(true);
-    }else{
+    } else {
       setIsSaved(false);
     }
   }, [savedPost])
@@ -158,17 +158,17 @@ export default function Post({ post }: PostProps) {
     setShowMoreOptions(false);
   }
 
-  const handleReport = async() => {
-    try{
-      const response= await api.post(`/post/report-post?id=${post._id}`);
-      console.log(response.data); 
-    }catch(error) {
+  const handleReport = async () => {
+    try {
+      const response = await api.post(`/post/report-post?id=${post._id}`);
+      console.log(response.data);
+    } catch (error) {
       console.log(error)
       alert(error.response.data.message || "Something went wrong!");
-    }finally{
+    } finally {
       setShowMoreOptions(false);
     }
-    
+
   };
 
   const toggleMoreOption = () => {
@@ -177,8 +177,7 @@ export default function Post({ post }: PostProps) {
 
   return (
     <div className=" bg-white w-[90vw] sm:w-full dark:bg-gray-800 border dark:border-gray-700 rounded-lg mb-4">
-      <div className="flex items-center justify-between p-4 relative">
-    <div key={post._id} className="solveissue max-w-lg bg-white w-[90vw] sm:w-full dark:bg-gray-800 border dark:border-gray-700 rounded-lg">
+
       <div className="flex items-center justify-between p-4">
         <Link to={`/seller/${post.user._id}`} className="flex items-center space-x-2">
           <img
@@ -207,7 +206,7 @@ export default function Post({ post }: PostProps) {
                     onClick={handleUnsave}
                     className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
                   >
-                    <BookmarkX className="w-5 h-5 mr-2"/>
+                    <BookmarkX className="w-5 h-5 mr-2" />
                     UnSave
                   </button> :
                   <button
@@ -222,7 +221,7 @@ export default function Post({ post }: PostProps) {
                 onClick={handleReport}
                 className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left"
               >
-                <span className="material-icons-outlined text-lg mr-2"><Flag className='w-5 h-5'/></span>
+                <span className="material-icons-outlined text-lg mr-2"><Flag className='w-5 h-5' /></span>
                 Report
               </button>
             </div>

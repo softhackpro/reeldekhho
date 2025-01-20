@@ -1,9 +1,7 @@
-import React, { useState } from "react";
-import { FaBars, FaBell, FaTimes } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import { FaBars, FaBell, FaFacebook, FaInstagram, FaTimes, FaYoutube } from "react-icons/fa";
 import axios from "axios";
-import { useEffect, useState } from "react";
 import { BiLogoPlayStore } from "react-icons/bi";
-import { FaBars, FaBell, FaTimes, FaFacebook, FaInstagram, FaYoutube } from "react-icons/fa";
 import { FaX } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
