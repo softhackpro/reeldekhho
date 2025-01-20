@@ -11,7 +11,10 @@ const useGetPosts = () => {
     const page = useSelector((state) => state?.post?.page);
 
     useEffect(() => {
+
         const fetchPosts = async () => {
+            console.log("I am run ng fetch post ");
+
             setLoading(true);
             try {
                 const excludeIds = posts.map(post => post._id).join(',');
@@ -27,6 +30,9 @@ const useGetPosts = () => {
         };
 
         if (!posts?.length) {
+            setTimeout(() => {
+                fetchPosts();
+            }, 5000)
             fetchPosts();
         } else {
             setLoading(false);

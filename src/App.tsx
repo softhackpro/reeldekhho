@@ -14,6 +14,8 @@ import SearchReels from './components/SearchReels';
 import Socketwindow from './components/socket';
 import api from './services/api/axiosConfig';
 import { setUserProfile } from './store/slices/authSlice';
+import applogo from '/assets/applogo.png'
+
 
 const Feed = lazy(() => import('./components/Feed'));
 const ReelsPage = lazy(() => import('./pages/ReelsPage'));
@@ -26,6 +28,18 @@ const StoryViewer = lazy(() => import('./components/story/StoryViewer'));
 const SignupPage = lazy(() => import('./pages/SignupPage'));
 const Editprofile = lazy(() => import('./pages/Editprofile'));
 
+
+const LoadComponents = () => {
+  return (
+    <div className=' w-full h-screen dark:bg-gray-900 bg-white flex justify-center items-center ' >
+      {/* <LoaderIcon className=' text-3xl animate-spin dark:text-white text-black' /> */}
+      <img className=' h-12  w-22' src={applogo} alt="" />
+    </div >
+
+  )
+}
+
+
 function AppContent() {
   const isDarkMode = useSelector((state: RootState) => state.theme.isDarkMode);
   const dispatch = useDispatch()
@@ -35,7 +49,6 @@ function AppContent() {
       setLoading(true)
       try {
         const response = await api.get('/auth/profile')
-        console.log(response.data.user);
         dispatch(setUserProfile(response.data.user))
       } catch (error) {
         console.log(error);
@@ -48,14 +61,14 @@ function AppContent() {
   }, [])
 
   if (loading) {
-    return <div className=' w-full h-full flex justify-center items-center text-black ' >Loading...</div>
+    return <LoadComponents />
   }
 
   return (
     <div className={isDarkMode ? 'dark' : ''}>
       <Socketwindow />
       <Router>
-        <Suspense fallback={<div className=' w-full h-full flex justify-center items-center text-black ' >Loading...</div>}>
+        <Suspense fallback={<LoadComponents />}>
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />

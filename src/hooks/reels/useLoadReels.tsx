@@ -6,6 +6,7 @@ const useLoadReels = () => {
     const [reels, setReels] = useState([]);
     const [fetchedReelIds, setFetchedReelIds] = useState<string[]>([]);
     const [hasmore, setHasmore] = useState(true)
+    const [loader, setLoader] = useState(true)
 
     const fetchReels = async () => {
         try {
@@ -16,6 +17,8 @@ const useLoadReels = () => {
             console.log(newReels);
         } catch (error) {
             console.error(error?.response?.data?.error);
+        } finally {
+            setLoader(false);
         }
     }
 
@@ -23,6 +26,9 @@ const useLoadReels = () => {
         if (!hasmore) {
             return;
         }
+
+        console.log("I am run ung ");
+
         try {
             const response = await api.get(`/post/get?page=${page}&excludeIds=${fetchedReelIds.join(',')}`);
             const newReels = response.data.posts;
@@ -44,7 +50,7 @@ const useLoadReels = () => {
         fetchReels();
     }, [])
 
-    return { reels, loadReels };
+    return { reels, loadReels, loader };
 }
 
 export default useLoadReels;
