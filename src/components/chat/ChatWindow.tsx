@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 import { Send, Phone, Video, Info, Loader2Icon } from 'lucide-react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { MessageBubble } from './MessageBubble';
 import { RootState } from '../../store/store';
 import api from '../../services/api/axiosConfig';
 import image from '/assets/image.png';
+import { setMessages, addMessage } from '../../store/slices/chatSlice';
 
 interface ChatWindowProps {
     chatId: string;
@@ -13,11 +14,6 @@ interface ChatWindowProps {
         profilePicture?: string;
         fullName: string;
     }>;
-    onAddChat: (newChat: {
-        _id: string;
-        profilePicture?: string;
-        fullName: string;
-    }) => void;
 }
 
 interface Message {
@@ -28,37 +24,37 @@ interface Message {
     timestamp: string;
 }
 
-export default function ChatWindow({ chatId, chats, onAddChat }: ChatWindowProps) {
+export default function ChatWindow({ chatId, chats }: ChatWindowProps) {
     const [newMessage, setNewMessage] = useState('');
-    const [chatMessages, setChatMessages] = useState<Message[]>([]);
     const [loading, setLoading] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const chat = chats.find((c) => c._id === chatId);
-    const socket = useSelector((state: RootState) => state.socket.value);
+    const chatMessages = useSelector((state: RootState) => state.chat.messages[chatId] || []);
+    const dispatch = useDispatch();
 
     // Fetch messages and chat details
     useEffect(() => {
         const fetchMessagesAndChatDetails = async () => {
             if (!chatId) return;
-            setChatMessages([]);
 
             try {
                 // Fetch chat details if not already in the chats array
                 if (!chat) {
                     const userResponse = await api.get(`/user/info?id=${chatId}`);
                     const user = userResponse.data;
-                    onAddChat({
-                        _id: user._id,
-                        profilePicture: user.profilePicture,
-                        fullName: user.fullName,
-                    });
+                    dispatch(setChats((prevChats) => {
+                        if (!prevChats.find((c) => c._id === user._id)) {
+                            return [...prevChats, user];
+                        }
+                        return prevChats;
+                    }));
                 }
 
                 // Fetch chat messages
                 setLoading(true);
                 const messagesResponse = await api.get(`/message/get?id=${chatId}`);
-                setChatMessages(messagesResponse.data.messages || []);
+                dispatch(setMessages({ chatId, messages: messagesResponse.data.messages || [] }));
             } catch (error) {
                 console.error('Error fetching messages or chat details:', error);
             } finally {
@@ -67,24 +63,7 @@ export default function ChatWindow({ chatId, chats, onAddChat }: ChatWindowProps
         };
 
         fetchMessagesAndChatDetails();
-    }, [chatId, chat, onAddChat]);
-
-    // Handle new messages from the socket
-    useEffect(() => {
-        if (!socket) return;
-
-        const handleNewMessage = (message: Message) => {
-            if (message.senderId === chatId) {
-                setChatMessages((prev) => [...prev, message]);
-            }
-        };
-
-        socket.on('newMessage', handleNewMessage);
-
-        return () => {
-            socket.off('newMessage', handleNewMessage);
-        };
-    }, [socket, chatId]);
+    }, [chatId, chat, dispatch]);
 
     // Auto-scroll to the bottom of the chat
     const scrollToBottom = () => {
@@ -105,7 +84,7 @@ export default function ChatWindow({ chatId, chats, onAddChat }: ChatWindowProps
             const response = await api.post(`/message/send?id=${chatId}`, {
                 message: newMessage,
             });
-            setChatMessages((prev) => [...prev, response.data.chat]);
+            dispatch(addMessage({ chatId, message: response.data.chat }));
             setNewMessage('');
         } catch (error) {
             console.error('Error sending message:', error);

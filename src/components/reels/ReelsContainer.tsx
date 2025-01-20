@@ -23,13 +23,13 @@ export default function ReelsContainer() {
     <div className="h-[100dvh] w-full max-w-md m-auto bg-black overflow-hidden">
       <div
         ref={containerRef}
-        className="h-full scrollbar-hide overflow-y-scroll snap-mandatory snap-y"
+        className="h-full scrollbar-hide overflow-y-scroll snap-start snap-mandatory snap-y"
       >
         {reels.map((reel, index) => (
           <div
             ref={(el) => (reelRefs.current[index] = el)}
             key={index}
-            className="snap-start h-full"
+            className="snap-start w-full h-full"
           >
             <ReelCard reel={reel} />
           </div>

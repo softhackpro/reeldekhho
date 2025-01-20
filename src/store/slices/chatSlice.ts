@@ -6,27 +6,38 @@ interface Message {
   content: string;
   isOwn: boolean;
   timestamp: string;
-  seen: boolean;
+}
+
+interface Chat {
+  _id: string;
+  profilePicture?: string;
+  fullName: string;
 }
 
 interface ChatState {
+  chats: Chat[];
   messages: Record<string, Message[]>;
-  unseenCount: Record<string, number>;
+  selectedChat: Chat | null;
 }
 
 const initialState: ChatState = {
+  chats: [],
   messages: {},
-  unseenCount: {},
+  selectedChat: null,
 };
 
 const chatSlice = createSlice({
   name: 'chat',
   initialState,
   reducers: {
+    setChats: (state, action: PayloadAction<Chat[]>) => {
+      console.log("chats from slices ", action.payload);
+
+      state.chats = action.payload;
+    },
     setMessages: (state, action: PayloadAction<{ chatId: string; messages: Message[] }>) => {
       const { chatId, messages } = action.payload;
       state.messages[chatId] = messages;
-      state.unseenCount[chatId] = messages.filter((msg) => !msg.seen).length;
     },
     addMessage: (state, action: PayloadAction<{ chatId: string; message: Message }>) => {
       const { chatId, message } = action.payload;
@@ -34,19 +45,12 @@ const chatSlice = createSlice({
         state.messages[chatId] = [];
       }
       state.messages[chatId].push(message);
-      if (!message.seen) {
-        state.unseenCount[chatId] = (state.unseenCount[chatId] || 0) + 1;
-      }
     },
-    markAsSeen: (state, action: PayloadAction<{ chatId: string }>) => {
-      const { chatId } = action.payload;
-      if (state.messages[chatId]) {
-        state.messages[chatId] = state.messages[chatId].map((msg) => ({ ...msg, seen: true }));
-        state.unseenCount[chatId] = 0;
-      }
+    setSelectedChat: (state, action: PayloadAction<Chat | null>) => {
+      state.selectedChat = action.payload;
     },
   },
 });
 
-export const { setMessages, addMessage, markAsSeen } = chatSlice.actions;
+export const { setChats, setMessages, addMessage, setSelectedChat } = chatSlice.actions;
 export default chatSlice.reducer;

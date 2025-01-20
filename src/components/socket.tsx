@@ -9,9 +9,11 @@ const Socketwindow = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const socket = io("ws://localhost:3001", {
-            query: { userId: user?._id }
+        const socket = io(import.meta.env.VITE_APP_SOCKET_URL, {
+            query: { userId: user?._id },
+            transports: ["websocket"],
         });
+
 
         dispatch(setSocket(socket));
 
@@ -33,3 +35,4 @@ const Socketwindow = () => {
 };
 
 export default Socketwindow;
+

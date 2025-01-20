@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const token = localStorage.getItem('token');
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+const api = axios.create({
+    baseURL: backendUrl,
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const api = axios.create({
     // baseURL: 'http://localhost:3000',
