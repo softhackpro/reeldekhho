@@ -1,3 +1,5 @@
+import React, { useState } from "react";
+import { FaBars, FaBell, FaTimes } from "react-icons/fa";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BiLogoPlayStore } from "react-icons/bi";
@@ -71,6 +73,11 @@ const Header = () => {
           <li className="py-3 px-4 hover:bg-gray-100 cursor-pointer">
             Home
           </li>
+          <Link to='/saved'>
+          <li className="py-3 px-4 hover:bg-gray-100 cursor-pointer">
+            Saved
+          </li>
+          </Link>
           <li className="py-3 px-4 hover:bg-gray-100 cursor-pointer">
             Change Password
           </li>

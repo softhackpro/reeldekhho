@@ -17,6 +17,7 @@ import { setUserProfile } from './store/slices/authSlice';
 import applogo from '/assets/applogo.png'
 
 
+
 const Feed = lazy(() => import('./components/Feed'));
 const ReelsPage = lazy(() => import('./pages/ReelsPage'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
@@ -27,6 +28,7 @@ const ExplorePage = lazy(() => import('./pages/ExplorePage'));
 const StoryViewer = lazy(() => import('./components/story/StoryViewer'));
 const SignupPage = lazy(() => import('./pages/SignupPage'));
 const Editprofile = lazy(() => import('./pages/Editprofile'));
+const SavedPage =lazy(() => import('./pages/SavedPage'));
 
 
 const LoadComponents = () => {
@@ -88,6 +90,7 @@ function AppContent() {
               <Route path="/saved" element={<Saved />} />
               <Route path="/page/:id" element={<Page />} />
               <Route path='/reels/:id' element={<SearchReels />} />
+              <Route path='/saved' element={<SavedPage />} />
             </Route>
           </Routes>
         </Suspense>
