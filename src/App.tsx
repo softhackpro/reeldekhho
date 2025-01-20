@@ -1,13 +1,21 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Provider } from 'react-redux';
+import { Provider, useDispatch } from 'react-redux';
 import { store } from './store/store';
 import { useSelector } from 'react-redux';
 import { RootState } from './store/store';
 import Layout from './components/layout/Layout';
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useEffect, useState } from 'react';
 import MessagesPage from './pages/MessagePage';
 import AddProduct from './pages/AddProduct';
+import Faq from './components/Faq/Faq';
+import Saved from './components/Faq/Saved';
+import Page from './components/Faq/Page';
 import SearchReels from './components/SearchReels';
+import Socketwindow from './components/socket';
+import api from './services/api/axiosConfig';
+import { setUserProfile } from './store/slices/authSlice';
+import applogo from '/assets/applogo.png'
+
 
 
 const Feed = lazy(() => import('./components/Feed'));
@@ -22,33 +30,47 @@ const SignupPage = lazy(() => import('./pages/SignupPage'));
 const Editprofile = lazy(() => import('./pages/Editprofile'));
 const SavedPage =lazy(() => import('./pages/SavedPage'));
 
+
+const LoadComponents = () => {
+  return (
+    <div className=' w-full h-screen dark:bg-gray-900 bg-white flex justify-center items-center ' >
+      {/* <LoaderIcon className=' text-3xl animate-spin dark:text-white text-black' /> */}
+      <img className=' h-12  w-22' src={applogo} alt="" />
+    </div >
+
+  )
+}
+
+
 function AppContent() {
   const isDarkMode = useSelector((state: RootState) => state.theme.isDarkMode);
+  const dispatch = useDispatch()
+  const [loading, setLoading] = useState(true)
+  useEffect(() => {
+    const getUser = async () => {
+      setLoading(true)
+      try {
+        const response = await api.get('/auth/profile')
+        dispatch(setUserProfile(response.data.user))
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false)
+      }
+    }
 
-  // useEffect(() => {
-  //   const getUser = async () => {
-  //     try {
-  //       const response = await axios.get('http://localhost:3000/api/auth/us',
-  //         {
-  //           headers: {
-  //             'Authorization': 'Bearer ' + localStorage.getItem('token'),
-  //             'Content-Type': 'application/json'
-  //           },
-  //         }
-  //       )
-  //       console.log(response);
+    getUser();
+  }, [])
 
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  //   getUser();
-  // }, [])
+  if (loading) {
+    return <LoadComponents />
+  }
 
   return (
     <div className={isDarkMode ? 'dark' : ''}>
+      <Socketwindow />
       <Router>
-        <Suspense fallback={<div className=' w-full h-full flex justify-center items-center text-black ' >Loading...</div>}>
+        <Suspense fallback={<LoadComponents />}>
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
@@ -61,15 +83,19 @@ function AppContent() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/editProfile" element={<Editprofile />} />
               <Route path="/seller/:id" element={<SellerProfile />} />
+              <Route path="/messages/:id" element={<MessagesPage />} />
               <Route path="/messages" element={<MessagesPage />} />
               <Route path="/add-product" element={<AddProduct />} />
+              <Route path="/faq" element={<Faq />} />
+              <Route path="/saved" element={<Saved />} />
+              <Route path="/page/:id" element={<Page />} />
               <Route path='/reels/:id' element={<SearchReels />} />
               <Route path='/saved' element={<SavedPage />} />
             </Route>
           </Routes>
         </Suspense>
       </Router>
-    </div>
+    </div >
   );
 }
 

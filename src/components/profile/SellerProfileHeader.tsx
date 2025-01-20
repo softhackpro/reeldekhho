@@ -8,6 +8,7 @@ import SellerPostGrid from "./SellerPostGrid";
 import useFollow from "../../hooks/useFollow";
 import { ProfileSkeloton } from "./ProfileSkeloton";
 import ProfileRating from "./ProfileRating";
+import api from "../../services/api/axiosConfig";
 
 export default function SellerProfileHeader() {
 
@@ -30,7 +31,8 @@ export default function SellerProfileHeader() {
   // );
 
   const fetchprofile = async () => {
-    const res = await axios.post(`http://localhost:3000/post/getprofile/${id}`);
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
+    const res = await axios.post(`${backendUrl}/post/getprofile/${id}`);
     setProfile(res.data.profile);
     setSeller(res.data.sellerposts);
     console.log(res);
@@ -69,7 +71,6 @@ export default function SellerProfileHeader() {
     runfunction();
   }, [id]);
 
-  // Run checkFollowing when following is updated
   useEffect(() => {
     if (following) {
       checkFollowing();
@@ -129,7 +130,7 @@ export default function SellerProfileHeader() {
                 </h1>
                 <div className="flex gap-4">
                   <IoMdChatboxes
-                    onClick={() => iconClick("/messages")}
+                    onClick={() => Navigate("/messages/" + profile._id)}
                     className="w-6 h-6 text-gray-500 cursor-pointer"
                   />
                   <FaWhatsapp className="w-6 h-6 text-green-500 cursor-pointer" />

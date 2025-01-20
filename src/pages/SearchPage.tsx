@@ -1,9 +1,11 @@
-import { Search } from 'lucide-react';
+import { LocateFixed, LocateFixedIcon, Search } from 'lucide-react';
 import SearchPost from '../components/SearchPost';
 // import { posts } from '../data/dummyData';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import HeaderStatic from '../components/HeaderStatic'
+import api from '../services/api/axiosConfig';
+
 const indianCities = [
   { value: "agra", label: "Agra" },
   { value: "ahmedabad", label: "Ahmedabad" },
@@ -82,56 +84,87 @@ const indianCities = [
 ];
 
 export default function SearchPage() {
-  // const backendUrl = import.meta.env.VITE_BACKEND_URL;
-  const [info, setInfo] = useState (false)
+  const [info, setInfo] = useState(false)
+  const [city, setCity] = useState([])
+  const [search, setSearch] = useState('')
   const [Loading, setLoading] = useState(false)
-  const fetchposts = async() =>{
-    // const res = await axios.get(`${backendUrl}/post/getsearchresult`)
-    const res = await axios.get(`http://localhost:3000/post/getsearchresult`)
-    console.log(res.data);
-    setInfo(res.data)
+
+  const fetchposts = async () => {
+    setLoading(true)
+    try {
+      const res = await api.get('/post/getsearchresult')
+      setInfo(res.data)
+    } catch (error) {
+
+    } finally {
+      setLoading(false)
+    }
+
   }
-useEffect(()=>{
-  fetchposts()
-},[])
+
+  useEffect(() => {
+    fetchposts();
+  }, [search, city]);
+
+  const fetchcity = async () => {
+    const res = await api.get(`/post/getcitylist`)
+    setCity(res.data.value);
+  }
+
+  useEffect(() => {
+    fetchcity()
+  }, [])
+
   return (
     <>
-    <HeaderStatic />
-    <div className="mt-8 md:mt-0 max-w-4xl mx-auto p-4 space-y-8">
-      <div className=" w-full mx-auto p-4">
-        <div className="flex gap-2 ">
-          <div className=' relative w-full '>
-            <input
-              type="text"
-              placeholder="Search"
-              className=" w-full p-3 bg-gray-100 dark:bg-gray-800 rounded-lg focus:outline-none dark:text-white"
-            />
+      <HeaderStatic />
+      <div className="mt-8 md:mt-0 max-w-4xl mx-auto p-4 space-y-8">
+        <div className=" w-full mx-auto p-4">
+          <div className="flex gap-2 ">
+            <div className=' p-1 dark:bg-gray-800 rounded-lg flex items-center gap-1 '>
+              <div className=' text-md text-sky-600'>
+                <LocateFixed />
+              </div>
+              <select
+                className=" w-20 p-2 bg-inherit dark:text-white text-sm focus:outline-none "
+              >
+                <option value="" disabled selected>
+                  Select
+                </option>
+                {city.map((item) => (
+                  <option key={item._id} value={item.city}>
+                    {item.city}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-            {Loading && <div className="h-6 w-6 absolute right-1 top-3 rounded-full border-4 border-white border-t-transparent animate-spin"></div>}
+            <div className=' relative w-full '>
+              <Search className=' absolute text-xs dark:text-white left-2 top-3' />
+              <input
+                type="text"
+                placeholder="Search"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className=" w-full p-3 bg-gray-100 dark:bg-gray-800 rounded-lg pl-10 focus:outline-none dark:text-white"
+              />
+
+              {Loading && <div className="h-6 w-6 absolute right-1 top-3 rounded-full border-4 border-white border-t-transparent animate-spin"></div>}
+            </div>
           </div>
-
-          <select
-            className=" w-20 p-3 bg-gray-100 dark:bg-gray-800 rounded-lg focus:outline-none dark:text-white"
-          >
-            <option value="" disabled selected>
-              Select a City
-            </option>
-            {indianCities.map((city) => (
-              <option key={city.value} value={city.value}>
-                {city.label}
-              </option>
-            ))}
-          </select>
         </div>
+        {
+          Loading ? (
+            <div className="h-8 w-8 mx-auto animate-spin rounded-full border-4 border-white border-t-transparent"></div>
+          ) : (
+            <div className="max-w-6xl mx-auto p-4">
+              <div className=" columns-2 sm:columns-3 md:gap-2 gap-[8px]  ">
+                {info ? <SearchPost info={info} /> : null}
+              </div>
+            </div>
+          )
+        }
       </div>
-
-      <div className="max-w-6xl mx-auto p-4">
-        <div className=" columns-2 sm:columns-3 md:gap-2 gap-[8px]  ">
-          {info ?<SearchPost info={info}/>: null}
-        </div>
-      </div>
-    </div>
-
     </>
   );
 }

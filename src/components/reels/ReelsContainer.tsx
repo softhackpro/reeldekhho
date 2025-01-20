@@ -7,7 +7,7 @@ const PAGE_SIZE = 5;
 
 export default function ReelsContainer() {
   const [hasMore, setHasMore] = useState(true);
-  const { loadReels, reels } = useLoadReels();
+  const { loadReels, reels, loader } = useLoadReels();
 
   const containerRef = useRef<HTMLDivElement>(null);
   const reelRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -16,31 +16,39 @@ export default function ReelsContainer() {
   const lastDiv = useIntersectionObserver(
     () => loadReels(),
     () => { },
-    { threshold: 1 }
+    { threshold: .3 }
   )
 
   return (
     <div className="h-[100dvh] w-full max-w-md m-auto bg-black overflow-hidden">
-      <div
-        ref={containerRef}
-        className="h-full scrollbar-hide overflow-y-scroll snap-mandatory snap-y"
-      >
-        {reels.map((reel, index) => (
+
+      {
+        loader ? (
+          <div>Loading...</div>
+        ) : (
           <div
-            ref={(el) => (reelRefs.current[index] = el)}
-            key={index}
-            className="snap-start h-full"
+            ref={containerRef}
+            className="h-[100dvh] scrollbar-hide overflow-y-scroll snap-start snap-mandatory snap-y"
           >
-            <ReelCard reel={reel} />
+            {reels && reels.length && reels.map((reel, index) => (
+              <div
+                ref={(el) => (reelRefs.current[index] = el)}
+                key={index}
+                className="snap-start w-full h-full"
+              >
+                <ReelCard reel={reel} />
+              </div>
+            ))}
+            <div
+              ref={lastDiv}
+              className="relative flex dark:bg-black bg-white text-black dark:text-white justify-center items-center z-10 h-full w-full snap-start overflow-hidden"
+            >
+              {hasMore ? <p>Loading more reels...</p> : <p>No more reels!</p>}
+            </div>
           </div>
-        ))}
-        <div
-          ref={lastDiv}
-          className="relative flex justify-center items-center dark:text-white text-black z-10 h-8 w-full snap-start bg-black overflow-hidden"
-        >
-          {hasMore ? <p>Loading more reels...</p> : <p>No more reels!</p>}
-        </div>
-      </div>
+        )
+      }
+
     </div>
   );
 }

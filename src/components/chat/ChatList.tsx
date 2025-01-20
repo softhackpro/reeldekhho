@@ -1,17 +1,19 @@
 import { useState } from 'react';
 import { Search } from 'lucide-react';
 import { ChatPreview } from './ChatPreview';
-import { chats } from '../../data/chatData';
+import { useNavigate } from 'react-router-dom';
 
-export default function ChatList({ onSelectChat }: { onSelectChat: (chatId: string) => void }) {
+export default function ChatList({ onSelectChat, chats }: { onSelectChat: (chatId: string) => void, chats: [] }) {
     const [searchQuery, setSearchQuery] = useState('');
+    console.log(chats);
 
-    const filteredChats = chats.filter(chat =>
-        chat.username.toLowerCase().includes(searchQuery.toLowerCase())
+    const filteredChats = chats?.filter(chat =>
+        chat?.fullName?.toLowerCase().includes(searchQuery.toLowerCase())
     );
+    const navigate = useNavigate()
 
     return (
-        <div className="h-full flex flex-col border-r dark:border-gray-700">
+        <div className="h-full flex flex-col overflow-y-scroll border-r dark:border-gray-700">
             <div className="p-4 border-b dark:border-gray-700">
                 <div className="relative">
                     <input
@@ -26,11 +28,11 @@ export default function ChatList({ onSelectChat }: { onSelectChat: (chatId: stri
             </div>
 
             <div className="flex-1 overflow-y-auto">
-                {filteredChats.map(chat => (
+                {filteredChats?.map(chat => (
                     <ChatPreview
-                        key={chat.id}
+                        key={chat._id}
                         chat={chat}
-                        onClick={() => onSelectChat(chat.id)}
+                        onClick={() => navigate('/messages/' + chat._id)}
                     />
                 ))}
             </div>

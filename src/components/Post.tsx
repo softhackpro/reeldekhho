@@ -29,6 +29,8 @@ interface PostProps {
     user: {
       fullName: string;
       profilePicture: string;
+      // longitude: string;
+      // lattitude:string;
     };
     createdAt: string;
   };
@@ -176,6 +178,8 @@ export default function Post({ post }: PostProps) {
   return (
     <div className=" bg-white w-[90vw] sm:w-full dark:bg-gray-800 border dark:border-gray-700 rounded-lg mb-4">
       <div className="flex items-center justify-between p-4 relative">
+    <div key={post._id} className="solveissue max-w-lg bg-white w-[90vw] sm:w-full dark:bg-gray-800 border dark:border-gray-700 rounded-lg">
+      <div className="flex items-center justify-between p-4">
         <Link to={`/seller/${post.user._id}`} className="flex items-center space-x-2">
           <img
             src={post.user.profilePicture}
@@ -237,8 +241,9 @@ export default function Post({ post }: PostProps) {
             onClick={() => setIsPlay(false)}
             onDoubleClick={handleLike}
             className="relative min-w-full bg-black sm:min-w-96"
+
           >
-            <video onClick={() => navigate(`/reels/${post._id}`)} ref={observerRef} className="w-full max-h-[60vh]" muted={isMute} loop autoPlay={isPlay}>
+            <video onClick={() => navigate(`/reels/${post._id}`)} ref={observerRef} className="w-full max-h-[60vh] objectcovernow" muted={isMute} loop autoPlay={isPlay}>
               <source src={post.file.url} type={`video/${post.file.fileType}`} />
               Your browser does not support the video tag.
             </video>
@@ -296,7 +301,7 @@ export default function Post({ post }: PostProps) {
             { }
 
           </div>
-          {post.createdAt ? <GetLocation createdDate={post.createdAt} /> : null}
+          {post.createdAt ? <GetLocation createdDate={post.createdAt} longitude={post.user.longitude} lattitude={post.user.lattitude} /> : null}
           {/* {isLoggedIn ? <button onClick={handleSaved}>
             <Bookmark className={`w-6 h-6 ${isSaved ? 'fill-current' : ''} dark:text-white`} />
           </button> : <button onClick={() => window.location.href = '/signup'}>

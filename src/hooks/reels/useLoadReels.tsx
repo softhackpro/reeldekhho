@@ -3,28 +3,44 @@ import api from "../../services/api/axiosConfig";
 let page = 1;
 
 const useLoadReels = () => {
-
     const [reels, setReels] = useState([]);
+    const [fetchedReelIds, setFetchedReelIds] = useState<string[]>([]);
+    const [hasmore, setHasmore] = useState(true)
+    const [loader, setLoader] = useState(true)
 
     const fetchReels = async () => {
         try {
             const response = await api.get('/post/get');
-            setReels(response.data.posts);
-            console.log(response.data.posts);
-
+            const newReels = response.data.posts;
+            setReels(newReels);
+            setFetchedReelIds(newReels.map((reel: any) => reel._id));
+            console.log(newReels);
         } catch (error) {
             console.error(error?.response?.data?.error);
+        } finally {
+            setLoader(false);
         }
     }
 
     const loadReels = async () => {
+        if (!hasmore) {
+            return;
+        }
+
+        console.log("I am run ung ");
+
         try {
-            const response = await api.get('/post/get?page=' + page);
-            setReels([...reels, ...response.data.posts]);
-            if (response.data.posts.length > 0) {
+            const response = await api.get(`/post/get?page=${page}&excludeIds=${fetchedReelIds.join(',')}`);
+            const newReels = response.data.posts;
+            if (newReels.length <= 0) {
+                setHasmore(false);
+            }
+            setReels([...reels, ...newReels]);
+            setFetchedReelIds([...fetchedReelIds, ...newReels.map((reel: any) => reel._id)]);
+            if (newReels.length > 0) {
                 page++;
             }
-            console.log(response.data.posts);
+            console.log(newReels);
         } catch (error) {
             console.error(error?.response?.data?.error);
         }
@@ -34,7 +50,7 @@ const useLoadReels = () => {
         fetchReels();
     }, [])
 
-    return { reels, loadReels };
+    return { reels, loadReels, loader };
 }
 
-export default useLoadReels
+export default useLoadReels;
