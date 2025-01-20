@@ -5,7 +5,7 @@ import { MessageBubble } from './MessageBubble';
 import { RootState } from '../../store/store';
 import api from '../../services/api/axiosConfig';
 import image from '/assets/image.png';
-import { setMessages, addMessage } from '../../store/slices/chatSlice';
+import { setMessages, addMessage, setChats } from '../../store/slices/chatSlice';
 
 interface ChatWindowProps {
     chatId: string;
@@ -28,10 +28,30 @@ export default function ChatWindow({ chatId, chats }: ChatWindowProps) {
     const [newMessage, setNewMessage] = useState('');
     const [loading, setLoading] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
-
+    const socket = useSelector(state => state?.socket?.value)
     const chat = chats.find((c) => c._id === chatId);
     const chatMessages = useSelector((state: RootState) => state.chat.messages[chatId] || []);
     const dispatch = useDispatch();
+
+
+    useEffect(() => {
+        const handleNewMessage = (data) => {
+            console.log(data);
+            if (data.senderId === chatId) {
+                dispatch(addMessage({ chatId, message: data }));
+            } else {
+                dispatch(addMessage(data));
+            }
+            scrollToBottom();
+        };
+
+        socket?.on('newMessage', handleNewMessage);
+
+        return () => {
+            socket?.off('newMessage', handleNewMessage);
+        };
+    }, [socket, chatId]);
+
 
     // Fetch messages and chat details
     useEffect(() => {

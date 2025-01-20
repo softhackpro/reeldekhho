@@ -56,7 +56,6 @@ export default function Feed() {
   const { loading, error, loadMorePosts } = useGetPosts();
   const posts = useSelector((state) => state?.post?.posts);
 
-  // Memoize the intersection observer callback
   const observerRef = useIntersectionObserver(
     useCallback(() => {
       loadMorePosts();
@@ -77,7 +76,7 @@ export default function Feed() {
   return (
     <>
       <HeaderStatic />
-      <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-3 margintopo">
+      <div className="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-3 margintopo">
         {/* Posts Area */}
         <div className="lg:col-span-2 mx-auto md:mt-0 max-w-2xl">
           <Suspense fallback={<div> </div>}>

@@ -1,7 +1,7 @@
 import { MapPin, FilePlus, Loader2Icon, Check, Star, ChevronDown } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { useEffect, useState, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { IoMdChatboxes } from "react-icons/io";
 import SellerPostGrid from "./SellerPostGrid";
@@ -23,9 +23,9 @@ export default function SellerProfileHeader() {
   const [checkFollowed, setCheckFollowed] = useState(null);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [isRateBottomSheetOpen, setIsRateBottomSheetOpen] = useState(false);
-
+  const navigate = useNavigate()
   const { following, createFollower, removeFollower } = useFollow();
-  
+
   // const [rating,setRating]= useState(
   //   profile?.totalReviews ? (profile?.totalStars / profile?.totalReviews) : 0
   // );
@@ -38,7 +38,7 @@ export default function SellerProfileHeader() {
     console.log(res);
   };
   // console.log(rating);
-  
+
 
   const checkFollowing = () => {
     const val = following.find((follow: any) => follow.followedId._id === id);
@@ -130,7 +130,7 @@ export default function SellerProfileHeader() {
                 </h1>
                 <div className="flex gap-4">
                   <IoMdChatboxes
-                    onClick={() => Navigate("/messages/" + profile._id)}
+                    onClick={() => navigate("/messages/" + profile._id)}
                     className="w-6 h-6 text-gray-500 cursor-pointer"
                   />
                   <FaWhatsapp className="w-6 h-6 text-green-500 cursor-pointer" />
@@ -219,22 +219,21 @@ export default function SellerProfileHeader() {
         {/* rating display */}
         <div className="w-full bg-white p-6 rounded-lg shadow-md mt-3">
           <div className="flex items-center gap-4">
-            <div className="text-4xl font-bold text-gray-900">{profile?.totalReviews==0 ? 0 : (profile?.totalStars/profile?.totalReviews).toFixed(1)}</div>
+            <div className="text-4xl font-bold text-gray-900">{profile?.totalReviews == 0 ? 0 : (profile?.totalStars / profile?.totalReviews).toFixed(1)}</div>
             <div>
               <div className="flex gap-1 mb-1">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <Star
-                  key={star}
-                  className={`w-5 h-5 ${
-                    profile?.totalReviews === 0
+                    key={star}
+                    className={`w-5 h-5 ${profile?.totalReviews === 0
                       ? 'text-gray-300'
                       : star <= profile?.totalStars / profile?.totalReviews
-                      ? 'text-yellow-500 fill-yellow-500'
-                      : star - profile?.totalStars / profile?.totalReviews <= 0.5
-                      ? 'text-yellow-500 fill-yellow-500'
-                      : 'text-gray-300'
-                  }`}
-                />
+                        ? 'text-yellow-500 fill-yellow-500'
+                        : star - profile?.totalStars / profile?.totalReviews <= 0.5
+                          ? 'text-yellow-500 fill-yellow-500'
+                          : 'text-gray-300'
+                      }`}
+                  />
                 ))}
               </div>
               <div className="text-sm text-gray-500">
@@ -279,12 +278,12 @@ export default function SellerProfileHeader() {
         )}
 
         {
-          isRateBottomSheetOpen 
-          && 
-          <ProfileRating 
-          setIsRateBottomSheetOpen={setIsRateBottomSheetOpen} 
-          sellerId={id} 
-          setProfile={setProfile}
+          isRateBottomSheetOpen
+          &&
+          <ProfileRating
+            setIsRateBottomSheetOpen={setIsRateBottomSheetOpen}
+            sellerId={id}
+            setProfile={setProfile}
           />
         }
 

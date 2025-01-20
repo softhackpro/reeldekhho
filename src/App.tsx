@@ -26,7 +26,7 @@ const ExplorePage = lazy(() => import('./pages/ExplorePage'));
 const StoryViewer = lazy(() => import('./components/story/StoryViewer'));
 const SignupPage = lazy(() => import('./pages/SignupPage'));
 const Editprofile = lazy(() => import('./pages/Editprofile'));
-const SavedPage =lazy(() => import('./pages/SavedPage'));
+const SavedPage = lazy(() => import('./pages/SavedPage'));
 
 
 const LoadComponents = () => {
