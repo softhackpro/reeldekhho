@@ -1,18 +1,19 @@
-import { useState } from "react";
+
 import api from "../../services/api/axiosConfig";
+import { useDispatch } from "react-redux";
+import { removePost, setSavedPosts, updateSavedPost } from "../../store/slices/savedPost";
+import { AppDispatch } from "../../store/store";
 
 const useSavedPost = () => {
-    const [savedPosts, setSavedPosts] = useState<any[]>([]); // Define type for savedPosts if needed
-    const [isSaved, setIsSaved] = useState(false);
+    
+    const dispatch= useDispatch<AppDispatch>();
 
     const addSavedPost = async (id: string) => {
-        setIsSaved(true)
-
         try {
             const response = await api.post('/post/addSaved?postId=' + id);
             console.log(response.data);
+            dispatch(updateSavedPost(response.data.savedPost))
         } catch (error) {
-            setIsSaved(false)
             console.error(error?.response?.data?.error);
         }
     };
@@ -20,20 +21,26 @@ const useSavedPost = () => {
     const getSavedPosts = async () => {
         try {
             const response = await api.get('/post/getsaved');
-            setSavedPosts(response.data.savedPosts);
+            console.log(response.data);
+            dispatch(setSavedPosts(response.data.savedPosts))
         } catch (error) {
-            console.error(error?.response?.data?.error);
+            console.error(error?.response?.data?.error || error);
         }
     };
 
     const removeSavedPost = async (id: string) => {
         try {
-            const response = await api.delete('/post/deletesaved', { data: { postId: id } });
-            console.log(response.data.posts);
-            setIsSaved(false)
-            // Optionally update savedPosts state here if needed
+            console.log(id);
+            const response = await api.delete(`/post/deletesaved?id=${id}`, { data: { postId: id } });
+            console.log(response.data);
+            
+            const value= {
+                _id: id
+            }
+            
+            dispatch(removePost(value))
         } catch (error) {
-            console.error(error?.response?.data?.error);
+            console.error(error);
         }
     };
 
@@ -41,8 +48,6 @@ const useSavedPost = () => {
         addSavedPost,
         getSavedPosts,
         removeSavedPost,
-        savedPosts, // Return savedPosts for usage in components
-        isSaved
     };
 };
 

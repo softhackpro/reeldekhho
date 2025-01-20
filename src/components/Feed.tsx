@@ -1,9 +1,10 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import Suggestions from './Suggestions';
 import useGetPosts from '../hooks/post/useGetPost';
 import { useSelector } from 'react-redux';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 import HeaderStatic from './HeaderStatic'
+import useSavedPost from '../hooks/post/useSavedpost';
 const Post = lazy(() => import('./Post'));
 
 export default function Feed() {
@@ -15,6 +16,11 @@ export default function Feed() {
     () => { },
     { threshold: 0.3 }
   );
+  const { getSavedPosts } = useSavedPost()
+
+  useEffect(() => {
+    getSavedPosts();
+  }, [])
 
   if (loading) {
     return (

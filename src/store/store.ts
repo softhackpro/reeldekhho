@@ -3,13 +3,15 @@ import authReducer from './slices/authSlice';
 import themeReducer from './slices/themeSlice';
 import chatReducer from './slices/chatSlice';
 import postSlices from './slices/postSlices'
+import savedPostSlice from './slices/savedPost'
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     theme: themeReducer,
     chat: chatReducer,
-    post: postSlices
+    post: postSlices,
+    savedPosts: savedPostSlice,
   },
 });
 

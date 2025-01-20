@@ -155,7 +155,7 @@ export default function ProfileHeader(props: any) {
           <div className="relative w-full h-[9.5rem] sm:h-60 md:h-72 lg:h-80 overflow-hidden rounded-lg">
             {video ? (
               <video
-                src="https://cdn.pixabay.com/video/2023/12/03/191860-891640938_large.mp4"
+                src={user?.smallvideo}
                 autoPlay
                 loop
                 muted

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaBars, FaBell, FaTimes } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -57,6 +58,11 @@ const Header = () => {
           <li className="py-3 px-4 hover:bg-gray-100 cursor-pointer">
             Home
           </li>
+          <Link to='/saved'>
+          <li className="py-3 px-4 hover:bg-gray-100 cursor-pointer">
+            Saved
+          </li>
+          </Link>
           <li className="py-3 px-4 hover:bg-gray-100 cursor-pointer">
             Settings
           </li>

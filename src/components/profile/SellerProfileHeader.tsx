@@ -1,35 +1,42 @@
-import { MapPin, FilePlus, Loader2Icon, Check } from "lucide-react";
+import { MapPin, FilePlus, Loader2Icon, Check, Star, ChevronDown } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState, useRef } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import { IoMdChatboxes } from "react-icons/io";
 import SellerPostGrid from "./SellerPostGrid";
-// import api from "../../services/api/axiosConfig";
 import useFollow from "../../hooks/useFollow";
 import { ProfileSkeloton } from "./ProfileSkeloton";
+import ProfileRating from "./ProfileRating";
 
 export default function SellerProfileHeader() {
 
   // const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const bottomSheetRef = useRef<HTMLDivElement | HTMLButtonElement>(null)
   const { id } = useParams();
   const [profile, setProfile] = useState(true);
   const [Seller, setSeller] = useState(false);
   const [video, setVideo] = useState(true);
-  const Navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
   const [checkFollowed, setCheckFollowed] = useState(null);
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
+  const [isRateBottomSheetOpen, setIsRateBottomSheetOpen] = useState(false);
 
   const { following, createFollower, removeFollower } = useFollow();
+  
+  // const [rating,setRating]= useState(
+  //   profile?.totalReviews ? (profile?.totalStars / profile?.totalReviews) : 0
+  // );
 
   const fetchprofile = async () => {
-    // const res = await axios.post(`${backendUrl}/post/getprofile/${id}`)
     const res = await axios.post(`http://localhost:3000/post/getprofile/${id}`);
     setProfile(res.data.profile);
     setSeller(res.data.sellerposts);
     console.log(res);
   };
+  // console.log(rating);
+  
 
   const checkFollowing = () => {
     const val = following.find((follow: any) => follow.followedId._id === id);
@@ -43,6 +50,20 @@ export default function SellerProfileHeader() {
   const runfunction = async () => {
     await fetchprofile();
   };
+
+  useEffect(() => {
+    const outsideClickDetect = (event: MouseEvent) => {
+      if (bottomSheetRef.current && !bottomSheetRef.current.contains(event.target as Node)) {
+        setIsBottomSheetOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', outsideClickDetect);
+
+    return () => {
+      document.removeEventListener('mousedown', outsideClickDetect)
+    };
+  }, []);
 
   useEffect(() => {
     runfunction();
@@ -63,11 +84,12 @@ export default function SellerProfileHeader() {
   };
 
   const handleUnfollow = async () => {
-    setLoading(true);
+    // setLoading(true);
     await removeFollower(id);
+    setIsBottomSheetOpen(false);
     await fetchprofile();
     setCheckFollowed(null)
-    setLoading(false);
+    // setLoading(false);
   }
 
 
@@ -168,10 +190,13 @@ export default function SellerProfileHeader() {
         {/* edit button */}
         <div className="sm:mt-4 mt-2 flex gap-4 flex-grow">
           {checkFollowed ? (
-            <span className="flex-1 flex items-center justify-center gap-2 px-4 py-1 border border-green-500 rounded-md text-base sm:text-lg font-semibold bg-green-100 text-green-700 dark:bg-green-800 dark:text-green-300">
-              <Check className="w-5 h-5" />
+            <button
+              ref={bottomSheetRef}
+              onClick={() => setIsBottomSheetOpen(true)}
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-1 active:scale-95 border border-green-500 rounded-md text-base sm:text-lg font-semibold bg-green-100 text-green-700 dark:bg-green-800 dark:text-green-300">
+              <ChevronDown className={`w-5 h-5 ${isBottomSheetOpen ? 'rotate-180' : 'rotate-0'} transition-transform`} />
               Following
-            </span>
+            </button>
           ) : (
             <button
               onClick={handleClick}
@@ -180,25 +205,87 @@ export default function SellerProfileHeader() {
               {loading ? <Loader2Icon className="animate-spin" /> : "Follow"}
             </button>
           )}
-          {
-            checkFollowed ? (
+
+          <button
+            onClick={() => setIsRateBottomSheetOpen(true)}
+            className="flex-1 flex justify-center items-center gap-2 px-4 py-1 border rounded-md text-base sm:text-lg font-semibold bg-gray-100 hover:bg-gray-300 dark:bg-gray-800 active:scale-95"
+          >
+            <Star className="text-[#FFAA00] w-5 h-5" /> {/* Bright and saturated gold */}
+            Rate us
+          </button>
+        </div>
+
+        {/* rating display */}
+        <div className="w-full bg-white p-6 rounded-lg shadow-md mt-3">
+          <div className="flex items-center gap-4">
+            <div className="text-4xl font-bold text-gray-900">{profile?.totalReviews==0 ? 0 : (profile?.totalStars/profile?.totalReviews).toFixed(1)}</div>
+            <div>
+              <div className="flex gap-1 mb-1">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <Star
+                  key={star}
+                  className={`w-5 h-5 ${
+                    profile?.totalReviews === 0
+                      ? 'text-gray-300'
+                      : star <= profile?.totalStars / profile?.totalReviews
+                      ? 'text-yellow-500 fill-yellow-500'
+                      : star - profile?.totalStars / profile?.totalReviews <= 0.5
+                      ? 'text-yellow-500 fill-yellow-500'
+                      : 'text-gray-300'
+                  }`}
+                />
+                ))}
+              </div>
+              <div className="text-sm text-gray-500">
+                {profile?.totalReviews} reviews
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {isBottomSheetOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-end z-50">
+            <div ref={bottomSheetRef} className="w-full bg-white rounded-t-lg p-4">
+
+              <div className="flex justify-center mb-2">
+                <div className="w-12 h-1 bg-gray-400 rounded-full"></div>
+              </div>
+
+              <h2 className="text-center text-lg font-semibold text-gray-800 mb-4">
+                {profile?.fullName}
+              </h2>
+
+              <button
+                className="block w-full text-left px-4 py-2 text-gray-800 font-semibold cursor-not-allowed"
+                disabled
+              >
+                Following
+              </button>
               <button
                 onClick={handleUnfollow}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-1 border border-red-500 rounded-md text-base sm:text-lg font-semibold bg-red-100 text-red-700 dark:bg-red-800 dark:text-red-300 hover:bg-red-200 hover:border-red-600 dark:hover:bg-red-700 active:scale-95">
-                {/* <FaUserMinus className="w-5 h-5" /> */}
-                {loading ? <Loader2Icon className="animate-spin" /> : "Unfollow"}
-              </button>
-            ) : (
-              <button
-                onClick={() => console.log("world")}
-                className="flex-1 px-4 py-1 border rounded-md text-base sm:text-lg font-semibold bg-gray-100 hover:bg-gray-300 dark:bg-gray-800 active:scale-95"
+                className="block w-full text-left px-4 py-2 text-red-600 font-semibold hover:bg-gray-100"
               >
-                Message
+                Unfollow
               </button>
-            )
-          }
+              <button
+                onClick={() => setIsBottomSheetOpen(false)}
+                className="block w-full text-left px-4 py-2 text-gray-600 hover:bg-gray-100"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
 
-        </div>
+        {
+          isRateBottomSheetOpen 
+          && 
+          <ProfileRating 
+          setIsRateBottomSheetOpen={setIsRateBottomSheetOpen} 
+          sellerId={id} 
+          setProfile={setProfile}
+          />
+        }
 
         {/* Video Card Section */}
         <div className="mt-8">
@@ -232,3 +319,12 @@ export default function SellerProfileHeader() {
     </>
   );
 }
+
+
+
+// // <button
+// //                 onClick={handleUnfollow}
+// //                 className="flex-1 flex items-center justify-center gap-2 px-4 py-1 border border-red-500 rounded-md text-base sm:text-lg font-semibold bg-red-100 text-red-700 dark:bg-red-800 dark:text-red-300 hover:bg-red-200 hover:border-red-600 dark:hover:bg-red-700 active:scale-95">
+// //                 {/* <FaUserMinus className="w-5 h-5" /> */}
+// //                 {loading ? <Loader2Icon className="animate-spin" /> : "Unfollow"}
+// //               </button>
