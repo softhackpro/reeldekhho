@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import logo from '../../public/file_svg.png';
 import useAuth from '../hooks/useAuth';
+import leftarrow from '/assets/arrow.svg'
 
 const SignupPage = () => {
     const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ const SignupPage = () => {
     });
     const navigation = useNavigate();
     const { register, loading, error } = useAuth()
+    const [loader, setLoader] = useState(false)
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -29,8 +31,7 @@ const SignupPage = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(formData);
-
+        setLoader(true)
         const success = await register(
             formData.full_name,
             formData.email,
@@ -40,17 +41,24 @@ const SignupPage = () => {
         if (success) {
             navigation('/login')
         } else {
-            console.log(error);
+            // console.log(error);
         }
+
+        setLoader(false)
 
     }
 
     const handleClick = async () => {
+
     }
 
     return (
 
         <div className="px-4 py-12 flex justify-center items-center h-screen ">
+            <div onClick={() => navigation('/')} className=' absolute flex flex-col  items-center gap-1 underline text-blue-600 top-2 left-3  dark:text-white '>
+                {/* <Link className=' ml-5 mb-[-50px] ' to={'/'}> Home </Link> */}
+                <img className=' h-10 w-20 ' src={leftarrow} alt="" />
+            </div>
             <div className="flex flex-col gap-4 justify-center p-8 rounded-xl">
 
                 <div className="flex flex-col items-center">
@@ -92,6 +100,7 @@ const SignupPage = () => {
                         className='rounded-md p-2 outline-none border border-gray-300 focus:border-indigo-500'
                     />
 
+                    <div className=' text-red-600 text-center'> {error ? error : ''} </div>
                     <div className='flex flex-col gap-2'>
                         {
                             false ? (
@@ -110,7 +119,7 @@ const SignupPage = () => {
                                     }
                                     disabled={loading}
                                 >
-                                    sign up
+                                    {loader ? 'Loading..' : 'sign-up'}
                                 </button>
                             )
                         }

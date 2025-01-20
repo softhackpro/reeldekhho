@@ -4,7 +4,7 @@ import useUploadFile from '../hooks/addPost/useUploadFile';
 import useAddPost from '../hooks/addPost/useAddPost';
 import useAuth from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateMyPosts } from '../store/slices/authSlice';
 import axios from 'axios';
 
@@ -51,10 +51,22 @@ function UploadProgress({ progress }: UploadProgressProps) {
 }
 
 const AddProduct: React.FC = () => {
-  const dispatch= useDispatch();
+
+  const user = useSelector((state) => state?.auth?.user)
+
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/login');
+    }
+  }, [])
+
+
+  const dispatch = useDispatch();
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [file, setFile] = useState<File | null>(null);
-  const [cities, setCities] = useState ([])
+  const [cities, setCities] = useState([])
   const [formData, setFormData] = useState<ProductForm>({
     productName: '',
     price: '',
@@ -151,7 +163,7 @@ const AddProduct: React.FC = () => {
     const success = await addPost(formData);
     dispatch(updateMyPosts(success));
 
-    console.log("add product success: ",success);
+    console.log("add product success: ", success);
     if (success) {
       alert('Product added successfully');
       setFormData({
@@ -178,14 +190,14 @@ const AddProduct: React.FC = () => {
       }
     };
   }, [filePreview]);
-  const fetchcategory = async()=>{
+  const fetchcategory = async () => {
     const res = await axios.get(`${backendUrl}/post/getcategory`)
     console.log(res.data.value, 'fetch category');
     setCities(res.data.value)
   }
-useEffect(()=>{
- fetchcategory()
-},[])
+  useEffect(() => {
+    fetchcategory()
+  }, [])
   return (
     <div className="flex flex-col md:flex-row gap-4 p-4">
       <div className="w-full md:w-1/2 border rounded-md p-6 flex flex-col justify-center items-center relative min-h-[500px]">
@@ -343,7 +355,7 @@ useEffect(()=>{
                 required
               >
                 <option value="" disabled>Select a category</option>
-                {cities.map ((item)=>(
+                {cities.map((item) => (
                   <option key={item._id} value={item.Title}>{item.Title}</option>
                 ))}
               </select>

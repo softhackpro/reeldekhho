@@ -1,8 +1,7 @@
-import { LocateFixed, LocateFixedIcon, Search } from 'lucide-react';
+import { LocateFixed, Search } from 'lucide-react';
 import SearchPost from '../components/SearchPost';
 // import { posts } from '../data/dummyData';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import HeaderStatic from '../components/HeaderStatic'
 import api from '../services/api/axiosConfig';
 
@@ -92,14 +91,13 @@ export default function SearchPage() {
   const fetchposts = async () => {
     setLoading(true)
     try {
-      const res = await api.get('/post/getsearchresult')
+      const res = await api.get(`/post/getsearchresult?search=${search}&city=${city}`)
       setInfo(res.data)
     } catch (error) {
 
     } finally {
       setLoading(false)
     }
-
   }
 
   useEffect(() => {

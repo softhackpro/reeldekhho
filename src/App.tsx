@@ -16,7 +16,6 @@ import api from './services/api/axiosConfig';
 import { setUserProfile } from './store/slices/authSlice';
 import applogo from '/assets/applogo.png'
 
-
 const Feed = lazy(() => import('./components/Feed'));
 const ReelsPage = lazy(() => import('./pages/ReelsPage'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
@@ -32,10 +31,8 @@ const Editprofile = lazy(() => import('./pages/Editprofile'));
 const LoadComponents = () => {
   return (
     <div className=' w-full h-screen dark:bg-gray-900 bg-white flex justify-center items-center ' >
-      {/* <LoaderIcon className=' text-3xl animate-spin dark:text-white text-black' /> */}
       <img className=' h-12  w-22' src={applogo} alt="" />
     </div >
-
   )
 }
 

@@ -13,7 +13,7 @@ export default function PostGrid(props) {
   const navigate = useNavigate()
   const posts = props.posts;
 
-  const dispatch= useDispatch();
+  const dispatch = useDispatch();
 
   const [isLoading, setIsLoading] = useState<Record<string, boolean>>({});
 
@@ -61,11 +61,11 @@ export default function PostGrid(props) {
           })
           // console.log(verifyPayment.data.post);
           const index = posts.findIndex((post) => post?._id === verifyPayment.data.post._id);
-          const updatedPost= verifyPayment.data.post;
+          const updatedPost = verifyPayment.data.post;
 
           dispatch(updateParticularPost({
             index,
-            post:updatedPost
+            post: updatedPost
           }))
         },
         prefill: {
@@ -112,7 +112,7 @@ export default function PostGrid(props) {
 
         {/* Instagram-style Grid */}
         <div className="grid grid-cols-3 gap-1 md:gap-8 mt-4">
-          {posts && posts.length && posts.map((post: any) => (
+          {posts && posts.length ? posts.map((post: any) => (
 
             <div onClick={() => navigate(`/reels/${post._id}`)} key={post._id} className="relative aspect-square group">
               {/* Check File Type */}
@@ -169,7 +169,11 @@ export default function PostGrid(props) {
                 )}
               </button>
             </div>
-          ))}
+          )) : (
+            <div className="flex items-center justify-center h-full w-full text-gray-500">
+              No Posts Found
+            </div>
+          )}
         </div>
       </div > : <div>no post found</div>
       }

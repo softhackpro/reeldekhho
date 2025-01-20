@@ -5,15 +5,22 @@ import useGetPost from '../hooks/profile/useGetPost';
 import { useSelector } from 'react-redux';
 import { ProfilePostSkeloton } from '../components/profile/ProfilePostSkeloton';
 import useFollow from '../hooks/useFollow';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 export default function Profile() {
-  const { isLoggedIn } = useAuth();
-  if (!isLoggedIn) {
-    window.location.href = '/signup';
-    return null;
-  }
+  const user = useSelector((state) => state?.auth?.user)
+  console.log(user);
 
-  const user = useSelector((state: any) => state?.auth?.user);
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/login');
+    }
+  }, [])
+
+
 
   const { followError, followLoading, following, followers } = useFollow()
   const { loading, error } = useGetPost();
