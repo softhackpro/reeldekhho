@@ -2,6 +2,8 @@ import { Grid, Bookmark, Heart, LoaderIcon, Plus } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api/axiosConfig';
+import { useDispatch } from 'react-redux';
+import { updateParticularPost } from '../../store/slices/authSlice';
 // import useGetPost from '../../hooks/profile/useGetPost';
 // import { useSelector } from 'react-redux';
 // import { ProfilePostSkeloton } from './ProfilePostSkeloton';
@@ -10,6 +12,8 @@ export default function PostGrid(props) {
   console.log(props);
   const navigate = useNavigate()
   const posts = props.posts;
+
+  const dispatch= useDispatch();
 
   const [isLoading, setIsLoading] = useState<Record<string, boolean>>({});
 
@@ -55,15 +59,14 @@ export default function PostGrid(props) {
             razorpay_signature: response.razorpay_signature,
             postId: postId
           })
-          console.log(verifyPayment.data.post);
-          const updatedPost = verifyPayment?.data.post
-          const index = posts.findIndex((post) => post._id === verifyPayment.data.post._id);
-          console.log(index);
-          setPosts((prev) => {
-            const updatedPosts = [...prev];
-            updatedPosts[index] = updatedPost;
-            return updatedPosts;
-          });
+          // console.log(verifyPayment.data.post);
+          const index = posts.findIndex((post) => post?._id === verifyPayment.data.post._id);
+          const updatedPost= verifyPayment.data.post;
+
+          dispatch(updateParticularPost({
+            index,
+            post:updatedPost
+          }))
         },
         prefill: {
           name: 'User Name', // You can get this from your user context

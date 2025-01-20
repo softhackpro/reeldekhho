@@ -25,6 +25,10 @@ export default function Profile() {
   }
 
 
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
       <ProfileHeader value={posts.length || 0} following={following.length} followers={followers.length} /> {/* Handle undefined posts */}

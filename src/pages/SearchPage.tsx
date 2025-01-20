@@ -83,18 +83,30 @@ const indianCities = [
 ];
 
 export default function SearchPage() {
-  // const backendUrl = import.meta.env.VITE_BACKEND_URL;
-  const [info, setInfo] = useState(false)
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const [info, setInfo] = useState (false)
+  const [city, setCity] = useState ([])
   const [Loading, setLoading] = useState(false)
-  const fetchposts = async () => {
-    // const res = await axios.get(`${backendUrl}/post/getsearchresult`)
-    const res = await api.get(`/post/getsearchresult`)
+  const fetchposts = async() =>{
+    const res = await axios.get(`${backendUrl}/post/getsearchresult`)
+    // const res = await axios.get(`http://localhost:3000/post/getsearchresult`)
     console.log(res.data);
     setInfo(res.data)
   }
-  useEffect(() => {
-    fetchposts()
-  }, [])
+useEffect(()=>{
+  fetchposts()
+},[])
+const fetchcity = async() =>{
+  const res = await axios.get(`${backendUrl}/post/getcitylist`)
+  console.log(res.data, 'city list');
+  
+  setCity(res.data.value);
+  
+}
+useEffect(()=>{
+  fetchcity ()
+},[])
+
   return (
     <>
       <HeaderStatic />
@@ -110,17 +122,16 @@ export default function SearchPage() {
 
               {Loading && <div className="h-6 w-6 absolute right-1 top-3 rounded-full border-4 border-white border-t-transparent animate-spin"></div>}
             </div>
-
-            <select
-              className=" w-20 p-3 bg-gray-100 dark:bg-gray-800 rounded-lg focus:outline-none dark:text-white"
-            >
-              <option value="" disabled selected>
-                Select a City
+          <select
+            className=" w-20 p-3 bg-gray-100 dark:bg-gray-800 rounded-lg focus:outline-none dark:text-white"
+          >
+            <option value="" disabled selected>
+              Select a City
+            </option>
+            {city.map((item) => (
+              <option key={item._id} value={item.city}>
+                {item.city}
               </option>
-              {indianCities.map((city) => (
-                <option key={city.value} value={city.value}>
-                  {city.label}
-                </option>
               ))}
             </select>
           </div>

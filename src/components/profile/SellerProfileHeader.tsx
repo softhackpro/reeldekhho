@@ -1,6 +1,5 @@
 import { MapPin, FilePlus, Loader2Icon, Check } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
-import { FaUserMinus } from 'react-icons/fa';
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -26,8 +25,9 @@ export default function SellerProfileHeader() {
   const { following, createFollower, removeFollower } = useFollow();
 
   const fetchprofile = async () => {
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
     // const res = await axios.post(`${backendUrl}/post/getprofile/${id}`)
-    const res = await api.post(`/post/getprofile/${id}`);
+    const res = await axios.post(`${backendUrl}/post/getprofile/${id}`);
     setProfile(res.data.profile);
     setSeller(res.data.sellerposts);
     console.log(res);
