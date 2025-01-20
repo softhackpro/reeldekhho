@@ -2,12 +2,14 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../public/file_svg.png';
 import useAuth from '../hooks/useAuth';
+import { ArrowBigLeft } from 'lucide-react';
+import leftarrow from '/assets/arrow.svg'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, loginErr } = useAuth();
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -20,11 +22,15 @@ export default function LoginPage() {
       navigate('/');
     }
     setLoading(false);
-
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
+
+      <div onClick={() => navigate('/')} className=' absolute flex flex-col  items-center gap-1 underline text-blue-600 top-2 left-3  dark:text-white '>
+        {/* <Link className=' ml-5 mb-[-50px] ' to={'/'}> Home </Link> */}
+        <img className=' h-10 w-20 ' src={leftarrow} alt="" />
+      </div>
       <div className="max-w-md w-full space-y-8">
 
         <div className="flex flex-col items-center">
@@ -57,7 +63,7 @@ export default function LoginPage() {
               />
             </div>
           </div>
-
+          <div className=' text-red-500 text-center'> {loginErr ? loginErr : ''}  </div>
           <div>
             <button
               disabled={loading}

@@ -25,30 +25,32 @@ interface UseAuthReturn {
     login: (email: string, password: string) => Promise<User | null>;
     register: (name: string, email: string, password: string) => Promise<boolean>;
     logout: () => void;
+    loginErr: String | null;
 }
 
 const useAuth = (): UseAuthReturn => {
     const [token, setToken] = useState(localStorage.getItem("token"));
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
+    const [loginErr, setLoginErr] = useState<string | null>(null);
     const dispatch = useDispatch();
 
     const isLoggedIn = !!token;
-    // console.log(isLoggedIn, "useauth.tsx 37");
 
     const login = async (email: string, password: string): Promise<User | null> => {
         setLoading(true);
-        setError(null);
+        setLoginErr(null);
         try {
             const response = await api.post<LoginResponse>('/auth/login', { email, password });
             const { token, user } = response.data;
+            localStorage.clear()
             localStorage.setItem('token', token);
             setToken(token);
             dispatch(setUserProfile(user));
             return user;
         } catch (err: any) {
             console.error('Login failed:', err.response?.data?.error || err.message);
-            setError(err.response?.data?.message || 'Login failed');
+            setLoginErr(err.response?.data?.message || 'Login failed');
             return null;
         } finally {
             setLoading(false);
@@ -88,6 +90,7 @@ const useAuth = (): UseAuthReturn => {
         login,
         register,
         logout,
+        loginErr
     };
 };
 

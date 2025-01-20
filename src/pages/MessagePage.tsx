@@ -3,9 +3,20 @@ import { ArrowLeft } from 'lucide-react';
 import ChatList from '../components/chat/ChatList';
 import ChatWindow from '../components/chat/ChatWindow';
 import useChat from '../hooks/useChat';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 export default function MessagesPage() {
     const navigate = useNavigate();
+
+    const user = useSelector((state) => state?.auth?.user)
+
+    useEffect(() => {
+        if (!user) {
+            navigate('/login');
+        }
+    }, [])
+
     const { chats, selectedChat } = useChat();
 
     return (

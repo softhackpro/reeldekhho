@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 import { BiLogoPlayStore } from "react-icons/bi";
 import { FaBars, FaBell, FaTimes, FaFacebook, FaInstagram, FaYoutube } from "react-icons/fa";
 import { FaX } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -13,6 +14,8 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [value, setValue] = useState([])
   const [settin, setSettin] = useState([])
+  const user = useSelector(state => state?.auth?.user)
+  const navigate = useNavigate()
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -25,6 +28,12 @@ const Header = () => {
   useEffect(() => {
     fetchheader();
   }, [])
+
+  const handleLogout = async () => {
+    localStorage.clear();
+    window.location.reload();
+  }
+
   return (
     <header className="relative top-0 left-0 w-full z-50 bg-white shadow-md fixedtio">
       <div className="flex items-center justify-between px-4 py-2 md:px-8">
@@ -73,31 +82,38 @@ const Header = () => {
           <li className="py-3 px-4 hover:bg-gray-100 cursor-pointer">
             Home
           </li>
-          <Link to='/saved'>
-          <li className="py-3 px-4 hover:bg-gray-100 cursor-pointer">
-            Saved
-          </li>
-          </Link>
-          <li className="py-3 px-4 hover:bg-gray-100 cursor-pointer">
-            Change Password
-          </li>
-          <li className="py-3 px-4 hover:bg-gray-100 cursor-pointer">
-            Logout
-          </li>
-          <Link to='/saved'>
-            <li className="py-3 px-4 hover:bg-gray-100 cursor-pointer">
-              Saved
-            </li>
-          </Link>
+          {
+            !user ? (
+              <>
+                <li className="py-3 px-4 hover:bg-gray-100 cursor-pointer" onClick={() => navigate('/login')} > Login </li>
+                <li className="py-3 px-4 hover:bg-gray-100 cursor-pointer" onClick={() => navigate('/signup')} > Sign-up </li>
+              </>
+            ) : (
+              <>
+                <li className="py-3 px-4 hover:bg-gray-100 cursor-pointer">
+                  Change Password
+                </li>
+                <li onClick={handleLogout} className="py-3 px-4 hover:bg-gray-100 cursor-pointer">
+                  Logout
+                </li>
+                <Link to='/saved'>
+                  <li className="py-3 px-4 hover:bg-gray-100 cursor-pointer">
+                    Saved
+                  </li>
+                </Link>
+                <li className="py-3 px-4 hover:bg-gray-100 cursor-pointer">
+                  Delete Account
+                </li>
+              </>
+            )
+          }
+
           <Link to='/faq'>
             <li className="py-3 px-4 hover:bg-gray-100 cursor-pointer">
               FAQ
             </li>
           </Link>
 
-          <li className="py-3 px-4 hover:bg-gray-100 cursor-pointer">
-            Delete Account
-          </li>
           {value.map((item, index) => (
             <Link to={`/page/${item.Title}`}><li key={index} className="py-3 px-4 hover:bg-gray-100 cursor-pointer">
               {item.Title}
@@ -140,19 +156,21 @@ const Header = () => {
           </ul>
         </div>
 
-      </div>
+      </div >
 
       {/* Overlay */}
-      {isMenuOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-30"
-          onClick={toggleMenu}
-        >
+      {
+        isMenuOpen && (
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 z-30"
+            onClick={toggleMenu}
+          >
 
-        </div>
-      )}
+          </div>
+        )
+      }
 
-    </header>
+    </header >
   );
 };
 

@@ -21,7 +21,6 @@ export default function ReelsContainer() {
 
   return (
     <div className="h-[100dvh] w-full max-w-md m-auto bg-black overflow-hidden">
-
       {
         loader ? (
           <div>Loading...</div>
