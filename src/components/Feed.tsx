@@ -80,7 +80,7 @@ export default function Feed() {
         {/* Posts Area */}
         <div className="lg:col-span-2 mx-auto md:mt-0 max-w-2xl">
           <Suspense fallback={<div> </div>}>
-            <div className=' flex flex-col gap-2'>
+            <div className=''>
               {posts?.length > 0 ? (
                 posts.map((post, index) => <Post key={index} post={post} />)
               ) : (
