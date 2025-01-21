@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { FileIcon, UploadIcon, XIcon } from 'lucide-react';
 import useUploadFile from '../hooks/addPost/useUploadFile';
 import useAddPost from '../hooks/addPost/useAddPost';
-import useAuth from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateMyPosts } from '../store/slices/authSlice';
@@ -27,12 +26,16 @@ interface UploadProgressProps {
 
 function UploadProgress({ progress }: UploadProgressProps) {
 
-  const { isLoggedIn } = useAuth();
+
+  const user = useSelector(state => state?.auth?.user)
   const navigate = useNavigate();
-  if (!isLoggedIn) {
-    navigate('/signup', { replace: true }); // Use replace to prevent adding to history
-    return null; // Prevent the component from rendering
-  }
+
+  useEffect(() => {
+    if (!user || user.role !== 'seller') {
+      navigate('/login', { replace: true });
+    }
+  }, [])
+
   if (progress <= 0 || progress >= 100) return null;
 
   return (

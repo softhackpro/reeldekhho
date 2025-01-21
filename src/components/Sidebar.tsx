@@ -2,9 +2,11 @@ import { Link, useLocation } from 'react-router-dom';
 import { Home, Search, Compass, Film, Heart, PlusSquare, MessageCircle, Menu, User } from 'lucide-react';
 import ThemeToggle from './layout/ThemeToggle';
 import applogo from '/assets/applogo.png'
+import { useSelector } from 'react-redux';
 
 export default function Sidebar() {
   const location = useLocation();
+  const user = useSelector(state => state.auth?.user);
 
   return (
     <>
@@ -20,8 +22,8 @@ export default function Sidebar() {
           <NavItem to="/reels" icon={<Film />} label="Reels" active={location.pathname === '/reels'} />
           {/* <NavItem to="/messages" icon={<MessageCircle />} label="Messages" /> */}
           {/* <NavItem to="/notifications" icon={<Heart />} label="Notifications" /> */}
-          
-          <NavItem to="/add-product" icon={<PlusSquare />} label="Create" />
+
+          {user && user?.role === 'seller' ? <NavItem to="/add-product" icon={<PlusSquare />} label="Create" /> : null}
           <NavItem to="/profile" icon={<User />} label="Profile" />
 
           <div className=' md:w-full w-fit flex lg:flex-row md:flex-col gap-4 justify-between items-center '>

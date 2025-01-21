@@ -1,5 +1,4 @@
 import { MapPin, FilePlus } from "lucide-react";
-import { FaWhatsapp } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import useGetProfile from "../../hooks/profile/useGetProfile";
 import { BsChat } from "react-icons/bs";
@@ -14,13 +13,13 @@ export default function ProfileHeader(props: any) {
   const followers = props.followers;
 
   const { loading, error } = useGetProfile();
-  
+
   const Navigate = useNavigate();
 
   const [video, setVideo] = useState(true);
-  const [isShareOpen, setIsShareOpen]= useState(false);
+  const [isShareOpen, setIsShareOpen] = useState(false);
   const user = useSelector((state: any) => state?.auth?.user);
-  
+
   const handleShare = () => {
     setIsShareOpen(true)
   };
@@ -56,17 +55,17 @@ export default function ProfileHeader(props: any) {
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="sm:hidden flex items-center justify-start gap-4 ">
+            {/* <div className="sm:hidden flex items-center justify-start gap-4 ">
               <h1 className="text font-semibold text-gray-800 dark:text-gray-200">
                 {user?.fullName}
               </h1>
-            </div>
+            </div> */}
           </div>
 
           {/* User Info Section */}
           <div className="flex-grow">
             {/* Username and Follow Button */}
-            <div className="sm:flex hidden items-center justify-start gap-4 ">
+            <div className="flex items-center  justify-start gap-4 ">
               <h1 className="text-xl md:text-2xl font-semibold text-gray-800 dark:text-gray-200">
                 {user?.fullName}
               </h1>
@@ -75,8 +74,6 @@ export default function ProfileHeader(props: any) {
                   onClick={() => iconClick("/messages")}
                   className="w-6 h-6 text-gray-500 cursor-pointer"
                 />
-                <FaWhatsapp className="w-6 h-6 text-green-500 cursor-pointer" />
-                <MapPin className="w-6 h-6 text-blue-500 cursor-pointer" />
               </div>
             </div>
 

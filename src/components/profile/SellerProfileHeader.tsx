@@ -31,13 +31,14 @@ export default function SellerProfileHeader() {
   // );
 
   const fetchprofile = async () => {
-    const backendUrl = import.meta.env.VITE_BACKEND_URL;
-    const res = await axios.post(`${backendUrl}/post/getprofile/${id}`);
+    const res = await api.post(`/post/getprofile/${id}`);
+    console.log("slakdnlasnfl");
+
+    console.log(res);
+
     setProfile(res.data.profile);
     setSeller(res.data.sellerposts);
-    console.log(res);
   };
-  // console.log(rating);
 
 
   const checkFollowing = () => {
@@ -98,6 +99,13 @@ export default function SellerProfileHeader() {
     return <ProfileSkeloton />;
   }
 
+  console.log(profile);
+
+
+  const handleWhatsapp = () => {
+    window.open(`https://wa.me/${profile?.phone}`);
+  }
+
   return (
     <>
       <div className="max-w-4xl mx-auto px-4 py-8">
@@ -124,8 +132,8 @@ export default function SellerProfileHeader() {
             {/* User Info Section */}
             <div className="flex-grow">
               {/* Username and Follow Button */}
-              <div className="sm:flex hidden items-center justify-start gap-4 ">
-                <h1 className="text-xl md:text-2xl font-semibold text-gray-800 dark:text-gray-200">
+              <div className="flex items-center justify-start gap-4 ">
+                <h1 className="text-xl hidden sm:block md:text-2xl font-semibold text-gray-800 dark:text-gray-200">
                   {profile?.fullName}
                 </h1>
                 <div className="flex gap-4">
@@ -133,8 +141,8 @@ export default function SellerProfileHeader() {
                     onClick={() => navigate("/messages/" + profile._id)}
                     className="w-6 h-6 text-gray-500 cursor-pointer"
                   />
-                  <FaWhatsapp className="w-6 h-6 text-green-500 cursor-pointer" />
-                  <MapPin className="w-6 h-6 text-blue-500 cursor-pointer" />
+                  <FaWhatsapp onClick={handleWhatsapp} className="w-6 h-6 text-green-500 cursor-pointer" />
+                  <MapPin onClick={() => window.open(profile.googleMapLink)} className="w-6 h-6 text-blue-500 cursor-pointer" />
                 </div>
               </div>
 
@@ -293,7 +301,7 @@ export default function SellerProfileHeader() {
             <div className="relative w-full h-[9.5rem] sm:h-60 md:h-72 lg:h-80 overflow-hidden rounded-lg">
               {video ? (
                 <video
-                  src="https://cdn.pixabay.com/video/2023/12/03/191860-891640938_large.mp4"
+                  src={`${import.meta.env.VITE_ADMIN_URL}/public/Images/${profile?.smallvideo}`}
                   autoPlay
                   loop
                   muted
@@ -319,12 +327,3 @@ export default function SellerProfileHeader() {
     </>
   );
 }
-
-
-
-// // <button
-// //                 onClick={handleUnfollow}
-// //                 className="flex-1 flex items-center justify-center gap-2 px-4 py-1 border border-red-500 rounded-md text-base sm:text-lg font-semibold bg-red-100 text-red-700 dark:bg-red-800 dark:text-red-300 hover:bg-red-200 hover:border-red-600 dark:hover:bg-red-700 active:scale-95">
-// //                 {/* <FaUserMinus className="w-5 h-5" /> */}
-// //                 {loading ? <Loader2Icon className="animate-spin" /> : "Unfollow"}
-// //               </button>

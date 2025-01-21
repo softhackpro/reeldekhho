@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../public/file_svg.png';
 import useAuth from '../hooks/useAuth';
-import { ArrowBigLeft } from 'lucide-react';
 import leftarrow from '/assets/arrow.svg'
 
 export default function LoginPage() {

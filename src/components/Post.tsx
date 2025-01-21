@@ -77,10 +77,6 @@ export default function Post({ post }: PostProps) {
 
   useEffect(() => {
     const value = savedPost.find((save: any) => save.postId._id === post._id)
-    console.log(savedPost, post._id);
-
-    console.log('useeffect ran', value);
-
     if (value) {
       setIsSaved(true);
     } else {
@@ -174,6 +170,7 @@ export default function Post({ post }: PostProps) {
   const toggleMoreOption = () => {
     setShowMoreOptions(!showMoreOptions)
   }
+
 
   return (
     <div className=" bg-white  w-full max-w-lg dark:bg-gray-800 border dark:border-gray-700 rounded-lg mb-4">
@@ -300,7 +297,7 @@ export default function Post({ post }: PostProps) {
             { }
 
           </div>
-          {post.createdAt ? <GetLocation createdDate={post.createdAt} longitude={post.user.longitude} lattitude={post.user.lattitude} /> : null}
+          {post.user?.longitude && post.user?.lattitude ? <GetLocation link={post.user?.googleMapLink} createdDate={post.createdAt} longitude={post.user.longitude} lattitude={post.user.lattitude} /> : null}
           {/* {isLoggedIn ? <button onClick={handleSaved}>
             <Bookmark className={`w-6 h-6 ${isSaved ? 'fill-current' : ''} dark:text-white`} />
           </button> : <button onClick={() => window.location.href = '/signup'}>
