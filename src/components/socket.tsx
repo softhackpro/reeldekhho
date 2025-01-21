@@ -2,37 +2,51 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { io } from "socket.io-client";
 import { setSocket } from "../store/slices/socketSlices";
-const Socketwindow = () => {
-    const user = useSelector(state => state?.auth?.user)
-    console.log("user ", user);
 
+const Socketwindow = () => {
+    const user = useSelector((state) => state?.auth?.user);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const socket = io(import.meta.env.VITE_APP_SOCKET_URL, {
-            query: { userId: user?._id },
-            transports: ["websocket"],
-        });
+        if (!user?._id) {
+            console.error("User is not authenticated. Socket connection skipped.");
+            return;
+        }
 
+        let socket;
 
-        dispatch(setSocket(socket));
+        try {
+            socket = io(import.meta.env.VITE_APP_SOCKET_URL, {
+                query: { userId: user._id },
+                transports: ["websocket"],
+            });
 
-        socket.on("connect", (id) => {
-            console.log("Connected to the server");
-        });
+            dispatch(setSocket(socket));
 
-        socket.on("connect_error", (error) => {
-            console.error("Connection error:", error);
-        });
+            socket.on("connect", () => {
+                console.log("Connected to the server");
+            });
+
+            socket.on("connect_error", (error) => {
+                console.error("Connection error:", error.message || error);
+            });
+
+            socket.on("disconnect", (reason) => {
+                console.warn("Socket disconnected:", reason);
+            });
+        } catch (error) {
+            console.error("Error initializing socket:", error.message || error);
+        }
 
         return () => {
-            socket.disconnect();
-            console.log("Socket disconnected");
+            if (socket) {
+                socket.disconnect();
+                console.log("Socket disconnected");
+            }
         };
-    }, [dispatch]);
+    }, [dispatch, user?._id]);
 
-    return null; 0
+    return null;
 };
 
 export default Socketwindow;
-

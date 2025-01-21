@@ -83,15 +83,16 @@ const indianCities = [
 ];
 
 export default function SearchPage() {
-  const [info, setInfo] = useState(false)
+  const [info, setInfo] = useState(true)
   const [city, setCity] = useState([])
   const [search, setSearch] = useState('')
   const [Loading, setLoading] = useState(false)
+  const [selectedCity, setSelectedCity] = useState('')
 
   const fetchposts = async () => {
     setLoading(true)
     try {
-      const res = await api.get(`/post/getsearchresult?search=${search}&city=${city}`)
+      const res = await api.get(`/post/getsearchresult?search=${search}&city=${selectedCity}`)
       setInfo(res.data)
     } catch (error) {
 
@@ -106,6 +107,8 @@ export default function SearchPage() {
 
   const fetchcity = async () => {
     const res = await api.get(`/post/getcitylist`)
+    console.log(res);
+
     setCity(res.data.value);
   }
 
@@ -124,12 +127,14 @@ export default function SearchPage() {
                 <LocateFixed />
               </div>
               <select
+                value={selectedCity}
+                onChange={(e) => setSelectedCity(e.target.value)}
                 className=" w-20 p-2 bg-inherit dark:text-white text-sm focus:outline-none "
               >
                 <option value="" disabled selected>
                   Select
                 </option>
-                {city.map((item) => (
+                {city && city.length && city.map((item) => (
                   <option key={item._id} value={item.city}>
                     {item.city}
                   </option>
@@ -156,13 +161,20 @@ export default function SearchPage() {
             <div className="h-8 w-8 mx-auto animate-spin rounded-full border-4 border-white border-t-transparent"></div>
           ) : (
             <div className="max-w-6xl mx-auto p-4">
-              <div className=" columns-2 sm:columns-3 md:gap-2 gap-[8px]  ">
-                {info ? <SearchPost info={info} /> : null}
-              </div>
+
+              {info && info.length ? (
+                <div className=" columns-2 sm:columns-3 md:gap-2 gap-[8px]  ">
+                  <SearchPost info={info} />
+                </div>
+              ) : (
+                <div className="w-full h-full text-center  dark:text-white text-black text-gray-500">
+                  No any post
+                </div>
+              )}
             </div>
           )
         }
-      </div>
+      </div >
     </>
   );
 }
