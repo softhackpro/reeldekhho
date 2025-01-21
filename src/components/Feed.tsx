@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 import useSavedPost from '../hooks/post/useSavedpost';
 import HeaderStatic from './HeaderStatic';
+import { User } from 'lucide-react';
 const Post = lazy(() => import('./Post'));
 
 const LoaderSkeloton = () => {
@@ -55,6 +56,7 @@ const LoaderSkeloton = () => {
 export default function Feed() {
   const { loading, error, loadMorePosts } = useGetPosts();
   const posts = useSelector((state) => state?.post?.posts);
+  const user = useSelector((state) => state?.auth?.user);
 
   const observerRef = useIntersectionObserver(
     useCallback(() => {
@@ -66,8 +68,10 @@ export default function Feed() {
   const { getSavedPosts } = useSavedPost()
 
   useEffect(() => {
-    getSavedPosts();
-  }, [])
+    if (user) {
+      getSavedPosts();
+    }
+  }, [user])
 
   if (loading) {
     return <LoaderSkeloton />;

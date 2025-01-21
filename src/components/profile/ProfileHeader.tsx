@@ -152,10 +152,11 @@ export default function ProfileHeader(props: any) {
           <div className="relative w-full h-[9.5rem] sm:h-60 md:h-72 lg:h-80 overflow-hidden rounded-lg">
             {video ? (
               <video
-                src={user?.smallvideo}
+                src={`${import.meta.env.VITE_ADMIN_URL}/public/Images/${props?.smallvideo}`}
                 autoPlay
                 loop
                 muted
+                controls
                 className="absolute inset-0 w-full h-full object-cover"
               />
             ) : (

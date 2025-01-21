@@ -1,12 +1,12 @@
 
 import api from "../../services/api/axiosConfig";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { removePost, setSavedPosts, updateSavedPost } from "../../store/slices/savedPost";
 import { AppDispatch } from "../../store/store";
 
 const useSavedPost = () => {
-    
-    const dispatch= useDispatch<AppDispatch>();
+
+    const dispatch = useDispatch<AppDispatch>();
 
     const addSavedPost = async (id: string) => {
         try {
@@ -28,16 +28,17 @@ const useSavedPost = () => {
         }
     };
 
+
     const removeSavedPost = async (id: string) => {
         try {
             console.log(id);
             const response = await api.delete(`/post/deletesaved?id=${id}`, { data: { postId: id } });
             console.log(response.data);
-            
-            const value= {
+
+            const value = {
                 _id: id
             }
-            
+
             dispatch(removePost(value))
         } catch (error) {
             console.error(error);

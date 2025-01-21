@@ -305,6 +305,7 @@ export default function SellerProfileHeader() {
                   autoPlay
                   loop
                   muted
+                  controls
                   className="absolute inset-0 w-full h-full object-cover"
                 />
               ) : (

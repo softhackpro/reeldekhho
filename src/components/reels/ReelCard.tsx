@@ -10,6 +10,7 @@ import useHandleComment from '../../hooks/post/useHandleComments';
 import { BiDotsVertical } from 'react-icons/bi';
 import CommentSection from '../interactions/CommentSection';
 import ShareButton from '../ShareBtn';
+import GetLocation from '../interactions/GetLocation';
 
 interface ReelCardProps {
   reel: {
@@ -141,6 +142,23 @@ export default function ReelCard({ reel }: ReelCardProps) {
         {/* Bottom Content */}
         <div className="absolute bottom-0 left-0 right-12 p-4">
           {/* User Info */}
+
+          <div
+            className="
+    text-black 
+    bg-white/70 
+    backdrop-blur-sm 
+    font-bold 
+    rounded-md 
+    px-2 
+    py-1 
+    w-fit
+    text-sm"
+          >
+            ₹ {reel?.price?.toFixed(2)}
+          </div>
+
+          <div className=' block mb-4'>   {reel.user?.longitude && reel.user?.lattitude ? <GetLocation link={reel.user?.googleMapLink} createdDate={reel.createdAt} longitude={reel.user.longitude} lattitude={reel.user.lattitude} /> : null}</div>
           <Link to={`/seller/${reel.user._id}`} className="flex items-center space-x-2 mb-3">
             <img
               src={reel.user.profilePicture || 'https://cdn.pixabay.com/photo/2023/12/04/06/14/ai-generated-8428762_1280.jpg'}
@@ -148,6 +166,9 @@ export default function ReelCard({ reel }: ReelCardProps) {
               className="w-8 h-8 rounded-full border border-white"
               loading="lazy"
             />
+            {/* <div className=' absolute left-0 bottom-8'> */}
+
+            {/* </div> */}
             <span className="text-white font-medium text-sm">
               {reel.user.fullName || 'Unknown User'}
             </span>
@@ -166,7 +187,7 @@ export default function ReelCard({ reel }: ReelCardProps) {
         {/* Action Buttons */}
         <div className="absolute bottom-4 right-2 space-y-4">
           <button
-            onClick={() => iconClicked(`https://wa.me/${reel.user.phone || '9955099966'}`)}
+            onClick={() => iconClicked(`https://wa.me/${reel.user.phone}`)}
             className="flex flex-col items-center"
           >
             <BsWhatsapp
@@ -213,6 +234,8 @@ export default function ReelCard({ reel }: ReelCardProps) {
                     }`}
                 />
               </button>
+
+
             </>
           ) : (
             <>
@@ -331,6 +354,7 @@ export default function ReelCard({ reel }: ReelCardProps) {
         </div>
       )
       }
+
 
     </div>
   );

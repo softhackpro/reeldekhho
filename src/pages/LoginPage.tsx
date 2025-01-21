@@ -23,6 +23,17 @@ export default function LoginPage() {
     setLoading(false);
   };
 
+  const handleGoogleClick = async () => {
+    try {
+      const redirectUri = `${import.meta.env.VITE_BACKEND_URL}/auth/google`;
+      console.log(redirectUri);
+
+      window.location.href = redirectUri;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
 
@@ -85,7 +96,7 @@ export default function LoginPage() {
             <button
               type="button"
               className="p-1 rounded-md active:scale-95 border shadow-sm font-semibold"
-            // onClick={handleClick}
+              onClick={handleGoogleClick}
             >
               Google
             </button>

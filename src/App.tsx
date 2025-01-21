@@ -15,6 +15,7 @@ import Socketwindow from './components/socket';
 import api from './services/api/axiosConfig';
 import { setUserProfile } from './store/slices/authSlice';
 import applogo from '/assets/applogo.png'
+import Verify from './pages/verify';
 
 const Feed = lazy(() => import('./components/Feed'));
 const ReelsPage = lazy(() => import('./pages/ReelsPage'));
@@ -68,6 +69,7 @@ function AppContent() {
       <Router>
         <Suspense fallback={<LoadComponents />}>
           <Routes>
+            <Route path='/verify/:token' element={<Verify />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/stories/:username" element={<StoryViewer />} />

@@ -28,10 +28,9 @@ const dummySavedPosts = [
 
 const SavedPage = () => {
 
-    const savedPosts= useSelector((state) => state.savedPosts.saved_Posts)
-    console.log(savedPosts);
-    const navigate= useNavigate();
-    
+    const savedPosts = useSelector((state) => state.savedPosts.saved_Posts)
+    const navigate = useNavigate();
+
     return (
         <div className="max-w-6xl mx-auto px-4 py-8">
             <h1 className="text-2xl font-bold mb-6">Saved Posts</h1>
@@ -39,10 +38,10 @@ const SavedPage = () => {
                 {
                     savedPosts && savedPosts.length && savedPosts.map((posts) => {
                         return (
-                            <div 
-                            onClick={() => navigate(`/reels/${posts?.postId._id}`)}
-                            key={posts._id} 
-                            className="relative aspect-square group cursor-pointer">
+                            <div
+                                onClick={() => navigate(`/reels/${posts?.postId._id}`)}
+                                key={posts._id}
+                                className="relative aspect-square group cursor-pointer">
                                 <div className="relative aspect-square group">
                                     {/* Check File Type */}
                                     {["mp4", "webm", "mov"].includes(posts?.postId?.file?.fileType?.toLowerCase()) ? (
