@@ -112,6 +112,7 @@ export default function ReelCard({ reel }: ReelCardProps) {
   };
   const [localLikes, setLocalLikes] = useState(reel.likes);
   const [isShareOpen, setIsShareOpen] = useState(false);
+  console.log(reel);
 
 
   return (
@@ -291,7 +292,7 @@ export default function ReelCard({ reel }: ReelCardProps) {
         <div
           className={`absolute z-50  overflow-y-scroll bottom-0 left-0 right-0 bg-gray-900 text-white p-4 rounded-t-lg transform transition-transform duration-300 ${isCommentOpen ? 'translate-y-0' : 'translate-y-full'
             }`}
-          style={{ height: '50%' }} // Adjusting for the fixed navigation bar
+          style={{ height: '50%' }}
         >
           <div className="flex sticky top-0 bg-inherit z-40  justify-between items-center mb-4">
             <h2 className="text-lg font-medium">Comments</h2>
@@ -343,7 +344,7 @@ export default function ReelCard({ reel }: ReelCardProps) {
             }
           </div>
 
-          <div className=' sticky bottom-14 bg-inherit top-0 w-full '>
+          <div className=' sticky bottom-14 bg-inherit z-40 top-0 w-full '>
             < CommentSection postId={reel.id} createComment={createComment} loader={loader} setLoader={setLoader} />
           </div>
 
