@@ -48,9 +48,16 @@ const SignupPage = () => {
 
     }
 
-    const handleClick = async () => {
+    const handleGoogleClick = async () => {
+        try {
+            const redirectUri = `${import.meta.env.VITE_BACKEND_URL}/auth/google`;
+            console.log(redirectUri);
 
-    }
+            window.location.href = redirectUri;
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
 
@@ -136,7 +143,7 @@ const SignupPage = () => {
                     <button
                         type="button"
                         className="p-1 rounded-md active:scale-95 border shadow-sm font-semibold"
-                        onClick={handleClick}
+                        onClick={handleGoogleClick}
                     >
                         Google
                     </button>

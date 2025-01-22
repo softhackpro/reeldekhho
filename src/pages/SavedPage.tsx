@@ -2,33 +2,10 @@ import { Heart } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const dummySavedPosts = [
-    {
-        _id: "1",
-        file: { url: "/assets/logo2.jpeg", fileType: "jpg" },
-        caption: "Saved Post 1",
-        likes: 10,
-        comments: 2,
-    },
-    {
-        _id: "2",
-        file: { url: "/assets/logo2.jpeg", fileType: "jpg" },
-        caption: "Saved Post 2",
-        likes: 20,
-        comments: 5,
-    },
-    {
-        _id: "3",
-        file: { url: "/assets/logo2.jpeg", fileType: "jpg" },
-        caption: "Saved Post 3",
-        likes: 15,
-        comments: 3,
-    },
-];
 
 const SavedPage = () => {
 
-    const savedPosts = useSelector((state) => state.savedPosts.saved_Posts)
+    const savedPosts = useSelector((state) => state?.savedPosts?.saved_Posts)
     const navigate = useNavigate();
 
     return (
