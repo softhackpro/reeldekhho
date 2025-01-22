@@ -31,8 +31,6 @@ const chatSlice = createSlice({
   initialState,
   reducers: {
     setChats: (state, action: PayloadAction<Chat[]>) => {
-      // console.log("chats from slices ", action.payload);
-
       state.chats = action.payload;
     },
     setMessages: (state, action: PayloadAction<{ chatId: string; messages: Message[] }>) => {

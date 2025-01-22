@@ -33,22 +33,24 @@ export default function ChatWindow({ chatId, chats }: ChatWindowProps) {
     const chatMessages = useSelector((state: RootState) => state.chat.messages[chatId] || []);
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        const handleNewMessage = (data) => {
-            if (data.senderId === chatId) {
-                dispatch(addMessage({ chatId, message: data }));
-            } else {
-                dispatch(addMessage(data));
-            }
-            scrollToBottom();
-        };
+    // useEffect(() => {
+    //     const handleNewMessage = (data) => {
+    //         console.log(data);
+    //         if (data.senderId === chatId) {
 
-        socket?.on('newMessage', handleNewMessage);
+    //             dispatch(addMessage({ chatId, message: data }));
+    //         } else {
+    //             dispatch(addMessage(data));
+    //         }
+    //         scrollToBottom();
+    //     };
 
-        return () => {
-            socket?.off('newMessage', handleNewMessage);
-        };
-    }, [socket, chatId]);
+    //     socket?.on('newMessage', handleNewMessage);
+
+    //     return () => {
+    //         socket?.off('newMessage', handleNewMessage);
+    //     };
+    // }, [socket, chatId]);
 
     useEffect(() => {
         const fetchMessagesAndChatDetails = async () => {

@@ -16,6 +16,7 @@ import api from './services/api/axiosConfig';
 import { setUserProfile } from './store/slices/authSlice';
 import applogo from '/assets/applogo.png'
 import Verify from './pages/verify';
+import useChat from './hooks/useChat';
 
 const Feed = lazy(() => import('./components/Feed'));
 const ReelsPage = lazy(() => import('./pages/ReelsPage'));
@@ -28,6 +29,7 @@ const StoryViewer = lazy(() => import('./components/story/StoryViewer'));
 const SignupPage = lazy(() => import('./pages/SignupPage'));
 const Editprofile = lazy(() => import('./pages/Editprofile'));
 const SavedPage = lazy(() => import('./pages/SavedPage'));
+
 
 
 const LoadComponents = () => {

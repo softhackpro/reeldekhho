@@ -65,8 +65,10 @@ const useChat = () => {
     useEffect(() => {
         if (!socket) return;
 
-        const handleNewMessage = (message: any) => {
-            dispatch(addMessage(message));
+        const handleNewMessage = (data: any) => {
+            console.log(data);
+
+            dispatch(addMessage(data.senderId, data.message));
         };
 
         socket.on('newMessage', handleNewMessage);
@@ -75,6 +77,7 @@ const useChat = () => {
             socket.off('newMessage', handleNewMessage);
         };
     }, [socket, dispatch]);
+
 
     return { chats, selectedChat };
 };
