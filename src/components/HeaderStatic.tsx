@@ -19,7 +19,7 @@ const Header = () => {
   };
   const fetchheader = async () => {
     const res = await axios.get(`${backendUrl}/post/fetchheader`)
-    console.log(res.data, 'aa rha hai header');
+    // console.log(res.data, 'aa rha hai header');
     setValue(res.data.value)
     setSettin(res.data.settin)
   }

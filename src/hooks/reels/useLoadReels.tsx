@@ -14,7 +14,7 @@ const useLoadReels = () => {
             const newReels = response.data.posts;
             setReels(newReels);
             setFetchedReelIds(newReels.map((reel: any) => reel._id));
-            console.log(newReels);
+            // console.log(newReels);
         } catch (error) {
             console.error(error?.response?.data?.error);
         } finally {
@@ -23,24 +23,16 @@ const useLoadReels = () => {
     }
 
     const loadReels = async () => {
-        if (!hasmore) {
-            return;
-        }
-
-        console.log("I am run ung ");
 
         try {
-            const response = await api.get(`/post/get?page=${page}&excludeIds=${fetchedReelIds.join(',')}`);
+            const response = await api.get(`/post/get?&excludeIds=${fetchedReelIds.join(',')}`);
             const newReels = response.data.posts;
-            if (newReels.length <= 0) {
-                setHasmore(false);
-            }
+
             setReels([...reels, ...newReels]);
             setFetchedReelIds([...fetchedReelIds, ...newReels.map((reel: any) => reel._id)]);
-            if (newReels.length > 0) {
-                page++;
+            if (newReels.length < 3) {
+                setHasmore(false)
             }
-            console.log(newReels);
         } catch (error) {
             console.error(error?.response?.data?.error);
         }
@@ -50,7 +42,7 @@ const useLoadReels = () => {
         fetchReels();
     }, [])
 
-    return { reels, loadReels, loader };
+    return { reels, loadReels, loader, hasmore };
 }
 
 export default useLoadReels;

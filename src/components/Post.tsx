@@ -157,9 +157,9 @@ export default function Post({ post }: PostProps) {
   const handleReport = async () => {
     try {
       const response = await api.post(`/post/report-post?id=${post._id}`);
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
-      console.log(error)
+      // console.log(error)
       alert(error.response.data.message || "Something went wrong!");
     } finally {
       setShowMoreOptions(false);

@@ -51,11 +51,11 @@ const SignupPage = () => {
     const handleGoogleClick = async () => {
         try {
             const redirectUri = `${import.meta.env.VITE_BACKEND_URL}/auth/google`;
-            console.log(redirectUri);
+            // console.log(redirectUri);
 
             window.location.href = redirectUri;
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     };
 

@@ -83,10 +83,10 @@ export default function PostGrid(props) {
     } catch (err) {
 
       if (err?.response) {
-        console.log(err?.response?.data)
+        // console.log(err?.response?.data)
         alert('Payment verification failed. Please contact support.');
       } else {
-        console.log(err);
+        // console.log(err);
       }
     } finally {
       setIsLoading((prev) => ({ ...prev, [postId]: false }));

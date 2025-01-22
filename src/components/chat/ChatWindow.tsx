@@ -33,10 +33,8 @@ export default function ChatWindow({ chatId, chats }: ChatWindowProps) {
     const chatMessages = useSelector((state: RootState) => state.chat.messages[chatId] || []);
     const dispatch = useDispatch();
 
-
     useEffect(() => {
         const handleNewMessage = (data) => {
-            console.log(data);
             if (data.senderId === chatId) {
                 dispatch(addMessage({ chatId, message: data }));
             } else {
@@ -52,14 +50,11 @@ export default function ChatWindow({ chatId, chats }: ChatWindowProps) {
         };
     }, [socket, chatId]);
 
-
-    // Fetch messages and chat details
     useEffect(() => {
         const fetchMessagesAndChatDetails = async () => {
             if (!chatId) return;
 
             try {
-                // Fetch chat details if not already in the chats array
                 if (!chat) {
                     const userResponse = await api.get(`/user/info?id=${chatId}`);
                     const user = userResponse.data;
@@ -71,7 +66,6 @@ export default function ChatWindow({ chatId, chats }: ChatWindowProps) {
                     }));
                 }
 
-                // Fetch chat messages
                 setLoading(true);
                 const messagesResponse = await api.get(`/message/get?id=${chatId}`);
                 dispatch(setMessages({ chatId, messages: messagesResponse.data.messages || [] }));
@@ -85,7 +79,6 @@ export default function ChatWindow({ chatId, chats }: ChatWindowProps) {
         fetchMessagesAndChatDetails();
     }, [chatId, chat, dispatch]);
 
-    // Auto-scroll to the bottom of the chat
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
@@ -94,16 +87,13 @@ export default function ChatWindow({ chatId, chats }: ChatWindowProps) {
         scrollToBottom();
     }, [chatMessages]);
 
-    // Handle sending a new message
     const handleSend = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!newMessage.trim()) return;
 
         setLoading(true);
         try {
-            const response = await api.post(`/message/send?id=${chatId}`, {
-                message: newMessage,
-            });
+            const response = await api.post(`/message/send?id=${chatId}`, { message: newMessage });
             dispatch(addMessage({ chatId, message: response.data.chat }));
             setNewMessage('');
         } catch (error) {
@@ -116,7 +106,7 @@ export default function ChatWindow({ chatId, chats }: ChatWindowProps) {
     if (!chat) return <div className="p-4 text-gray-500">Loading chat...</div>;
 
     return (
-        <div className="h-full w-full flex flex-col dark:bg-gray-900">
+        <div className="h-full w-full overflow-x-hidden flex flex-col dark:bg-gray-900">
             {/* Chat Header */}
             <div className="p-4 border-b w-full dark:border-gray-700 flex items-center justify-between bg-white dark:bg-gray-900">
                 <div className="flex items-center space-x-3">
@@ -141,14 +131,22 @@ export default function ChatWindow({ chatId, chats }: ChatWindowProps) {
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-2 space-y-2">
-                {chatMessages.map((message) => (
-                    <MessageBubble
-                        key={message._id}
-                        message={message}
-                        isOwn={message.isOwn}
-                    />
-                ))}
+            <div className="flex-1 overflow-y-auto p-2 space-y-2 max-h-[calc(100vh-12rem)]">
+                {loading ? (
+                    <div className="flex justify-center items-center">
+                        <Loader2Icon className="animate-spin text-blue-500 w-6 h-6" />
+                    </div>
+                ) : chatMessages.length === 0 ? (
+                    <div className="text-center text-gray-500">No messages yet. Start messaging!</div>
+                ) : (
+                    chatMessages.map((message) => (
+                        <MessageBubble
+                            key={message._id}
+                            message={message}
+                            isOwn={message.isOwn}
+                        />
+                    ))
+                )}
                 <div ref={messagesEndRef} />
             </div>
 
@@ -160,7 +158,7 @@ export default function ChatWindow({ chatId, chats }: ChatWindowProps) {
                             type="text"
                             value={newMessage}
                             onChange={(e) => setNewMessage(e.target.value)}
-                            placeholder="Message..."
+                            placeholder="Type a message..."
                             className="flex-1 p-2 bg-gray-100 dark:bg-gray-800 rounded-full focus:outline-none dark:text-white"
                             disabled={loading}
                         />

@@ -8,8 +8,8 @@ interface SharePopupProps {
 }
 
 export default function ShareFeature({ isOpen, onClose, profileId }: SharePopupProps) {
-    console.log(profileId);
-    
+    // console.log(profileId);
+
     const [showCopied, setShowCopied] = useState(false);
     const popupRef = useRef<HTMLDivElement>(null);
 
@@ -69,13 +69,13 @@ export default function ShareFeature({ isOpen, onClose, profileId }: SharePopupP
                 window.open(`https://t.me/share/url?url=${url}`, '_blank');
             },
         },
-     ];
+    ];
 
-     if (!isOpen) return null;
+    if (!isOpen) return null;
 
-     return (
-         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-             <div
+    return (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+            <div
                 ref={popupRef}
                 className="bg-white dark:bg-gray-800 rounded-xl w-full max-w-sm overflow-hidden"
             >
@@ -110,6 +110,6 @@ export default function ShareFeature({ isOpen, onClose, profileId }: SharePopupP
                     </div>
                 )}
             </div>
-         </div>
+        </div>
     );
 }

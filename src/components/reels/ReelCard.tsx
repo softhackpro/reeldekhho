@@ -78,7 +78,12 @@ export default function ReelCard({ reel }: ReelCardProps) {
     setIsSaved(!isSaved);
   };
 
-  const handleReelsClick = () => {
+  const handleReelsClick = (event: React.MouseEvent) => {
+    // Prevent handling clicks on child elements (like the comment section)
+    if (event.target instanceof HTMLElement && event.target.closest('.comment-popup')) {
+      return;
+    }
+
     if (reel.file.url.includes('video/')) {
       if (videoRef.current?.paused) {
         videoRef.current.play();
@@ -87,6 +92,7 @@ export default function ReelCard({ reel }: ReelCardProps) {
       }
     }
   };
+
 
   const handleCommentClick = (event: React.MouseEvent) => {
     event.stopPropagation(); // Prevent video pause when opening comments
@@ -112,7 +118,7 @@ export default function ReelCard({ reel }: ReelCardProps) {
   };
   const [localLikes, setLocalLikes] = useState(reel.likes);
   const [isShareOpen, setIsShareOpen] = useState(false);
-  console.log(reel);
+  // console.log(" this is reels ->  ", reel);
 
 
   return (
@@ -120,23 +126,26 @@ export default function ReelCard({ reel }: ReelCardProps) {
       onClick={handleReelsClick}
       className="reel relative z-10 h-[100dvh] bg-black bg-inherit w-full bg-contain bg-center snap-start overflow-hidden"
     >
-      {reel.file.url.includes('image/') ? (
-        <img
-          src={reel.file.url}
-          alt={reel.caption || 'Reel Image'}
-          className=" w-full h-full object-cover"
-          loading="lazy"
-        />
-      ) : (
-        <video
-          ref={videoRef}
-          key={reel._id}
-          src={reel.file.url}
-          className="w-full h-full "
-          loop
-          playsInline
-        />
-      )}
+      <div className=' flex items-center justify-center h-full w-full'>
+        {reel.file.url.includes('image/') ? (
+          <img
+            src={reel.file.url}
+            alt={reel.caption || 'Reel Image'}
+            className=" object-contain object-center"
+            loading="lazy"
+          />
+        ) : (
+          <video
+            ref={videoRef}
+            key={reel._id}
+            src={reel.file.url}
+            className=" object-contain "
+            loop
+            playsInline
+          />
+        )}
+      </div>
+
 
       {/* Overlay */}
       <div className="absolute inset-0 bottom-12 top-0">
@@ -304,7 +313,7 @@ export default function ReelCard({ reel }: ReelCardProps) {
             </button>
           </div>
 
-          <div className="space-y-4 w-full h-full">
+          <div className="space-y-4 comment-popup w-full h-full">
             {comments && comments.length ?
               (comments.map((comment) => (
                 <div key={comment._id} className="flex items-start space-x-4 mb-2">
@@ -345,7 +354,7 @@ export default function ReelCard({ reel }: ReelCardProps) {
           </div>
 
           <div className=' sticky bottom-14 bg-inherit z-40 top-0 w-full '>
-            < CommentSection postId={reel.id} createComment={createComment} loader={loader} setLoader={setLoader} />
+            < CommentSection postId={reel._id} createComment={createComment} loader={loader} setLoader={setLoader} />
           </div>
 
         </div>

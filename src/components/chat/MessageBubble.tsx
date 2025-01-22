@@ -1,3 +1,5 @@
+
+
 import { format } from "date-fns";
 import { enIN } from "date-fns/locale";
 
@@ -27,7 +29,7 @@ export function MessageBubble({ message, isOwn }: MessageBubbleProps) {
                     : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white'
                     }`}
             >
-                <p>{message.message}</p>
+                <p className="whitespace-pre-wrap break-words">{message.message}</p>
                 <span
                     className={`block text-xs mt-1 ${isOwn ? 'text-blue-100' : 'text-gray-500 dark:text-gray-400'}`}
                 >
@@ -37,3 +39,4 @@ export function MessageBubble({ message, isOwn }: MessageBubbleProps) {
         </div>
     );
 }
+

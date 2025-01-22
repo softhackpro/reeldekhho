@@ -8,11 +8,11 @@ import { setUserProfile } from "../store/slices/authSlice";
 const EditProfile: React.FC = () => {
   const user = useSelector((state: any) => state?.auth?.user);
   const Navigate = useNavigate();
-  const dispatch= useDispatch();
+  const dispatch = useDispatch();
 
-  const [loader, setLoader]= useState<boolean>(false);
+  const [loader, setLoader] = useState<boolean>(false);
   const [profilePreview, setProfilePreview] = useState<string | undefined>(user?.profilePicture || "");
-  const [profileFile, setProfileFile]= useState<File | undefined>(undefined)
+  const [profileFile, setProfileFile] = useState<File | undefined>(undefined)
   const [name, setName] = useState<string>(user?.fullName || "");
   const [occupation, setOccupation] = useState<string>(user?.occupation || "");
   const [website, setWebsite] = useState<string>(user?.website || "");
@@ -42,24 +42,24 @@ const EditProfile: React.FC = () => {
 
   const handleSave = async () => {
     setLoader(true);
-  
+
     const formData = new FormData();
     formData.append("fullName", name);
     formData.append("occupation", occupation);
     formData.append("website", website);
     formData.append("address", address);
-  
+
     if (profileFile) {
       formData.append("profilePicture", profileFile);
     } else {
       formData.append("profileUrl", user?.profilePicture || "");
     }
-  
+
     try {
-      console.log(formData, "59 data");
-      
+      // console.log(formData, "59 data");
+
       const response = await api.post("/auth/updateprofile", formData);
-      console.log(response);
+      // console.log(response);
 
       dispatch(setUserProfile(response.data.user))
       // Navigate to the profile page after success
@@ -70,7 +70,7 @@ const EditProfile: React.FC = () => {
       setLoader(false);
     }
   };
-  
+
 
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
@@ -150,7 +150,7 @@ const EditProfile: React.FC = () => {
             Cancel
           </button>
           <button onClick={handleSave} className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600">
-            { loader? <Loader2Icon className="animate-spin text-white" /> :'Save'}
+            {loader ? <Loader2Icon className="animate-spin text-white" /> : 'Save'}
           </button>
         </div>
       </div>

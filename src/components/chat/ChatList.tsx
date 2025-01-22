@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function ChatList({ onSelectChat, chats }: { onSelectChat: (chatId: string) => void, chats: [] }) {
     const [searchQuery, setSearchQuery] = useState('');
-    console.log(chats);
+    // console.log(chats);
 
     const filteredChats = chats?.filter(chat =>
         chat?.fullName?.toLowerCase().includes(searchQuery.toLowerCase())

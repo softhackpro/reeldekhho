@@ -10,7 +10,7 @@ const useChat = () => {
     const dispatch = useDispatch();
     const socket = useSelector((state: RootState) => state.socket.value);
     const chats = useSelector((state: RootState) => state.chat.chats);
-    console.log("charts", chats);
+    // console.log("charts", chats);
 
     const selectedChat = useSelector((state: RootState) => state.chat.selectedChat);
 
@@ -18,7 +18,7 @@ const useChat = () => {
         const fetchChats = async () => {
             try {
                 const response = await api.get('/message/getee');
-                console.log(response.data);
+                // console.log(response.data);
 
                 if (response.data && Array.isArray(response.data)) {
                     dispatch(setChats(response.data));
@@ -40,7 +40,7 @@ const useChat = () => {
                 const response = await api.get(`/message/info?id=${chatId}`);
                 const newChat = response.data?.user;
                 if (newChat) {
-                    console.log("new charts", newChat);
+                    // console.log("new charts", newChat);
 
                     dispatch(setChats([...chats, newChat]));
                     dispatch(setSelectedChat(response.data?.chat));

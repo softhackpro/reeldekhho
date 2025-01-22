@@ -50,7 +50,7 @@ function AppContent() {
         const response = await api.get('/auth/profile')
         dispatch(setUserProfile(response.data.user))
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       } finally {
         setLoading(false)
       }

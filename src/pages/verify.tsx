@@ -18,14 +18,14 @@ const Verify = () => {
                 const response = await axios.get(`${baseurl}/auth/profile`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
-                console.log('response:', response.data);
+                // console.log('response:', response.data);
                 localStorage.clear()
                 localStorage.setItem('token', token)
                 dispatch(setUserProfile(response?.data?.user))
 
                 navigate('/');
             } catch (err) {
-                console.error('Error:', err);
+                // console.error('Error:', err);
                 setError(err?.response?.data?.message || err.message || 'Some error occurred');
             }
         }

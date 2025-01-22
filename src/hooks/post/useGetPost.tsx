@@ -14,7 +14,7 @@ const useGetPosts = () => {
     useEffect(() => {
 
         const fetchPosts = async () => {
-            console.log("I am run ng fetch post ");
+            // console.log("I am run ng fetch post ");
 
             setLoading(true);
             try {

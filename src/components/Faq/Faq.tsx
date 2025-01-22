@@ -10,7 +10,7 @@ const Faq = () => {
   const [faqData, setFaqData] = useState([]);
   const fetchfaq = async () => {
     const res = await axios.get(`${backendUrl}/post/fetchfaq`);
-    console.log(res.data, "coming from faq");
+    // console.log(res.data, "coming from faq");
     setFaqData(res.data);
   };
   useEffect(() => {
@@ -78,9 +78,8 @@ const Faq = () => {
                 )}
               </button>
               <div
-                className={`px-6 overflow-hidden transition-all duration-300 ${
-                  activeIndex === index ? "max-h-96 pb-6" : "max-h-0"
-                }`}
+                className={`px-6 overflow-hidden transition-all duration-300 ${activeIndex === index ? "max-h-96 pb-6" : "max-h-0"
+                  }`}
               >
                 <p
                   className="text-gray-600 leading-relaxed"

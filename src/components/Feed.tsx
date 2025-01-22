@@ -65,13 +65,6 @@ export default function Feed() {
     () => { },
     { threshold: 0.3 }
   );
-  const { getSavedPosts } = useSavedPost()
-
-  useEffect(() => {
-    if (user) {
-      getSavedPosts();
-    }
-  }, [user])
 
   if (loading) {
     return <LoaderSkeloton />;

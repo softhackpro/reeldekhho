@@ -32,9 +32,9 @@ export default function SellerProfileHeader() {
 
   const fetchprofile = async () => {
     const res = await api.post(`/post/getprofile/${id}`);
-    console.log("slakdnlasnfl");
+    // console.log("slakdnlasnfl");
 
-    console.log(res);
+    // console.log(res);
 
     setProfile(res.data.profile);
     setSeller(res.data.sellerposts);

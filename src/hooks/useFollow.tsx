@@ -14,7 +14,7 @@ const useFollow = () => {
       const result1 = api.get(`/follow/getFollowed`);
       const result2 = api.get(`follow/getAllFollower`);
       const [response1, response2] = await Promise.all([result1, result2])
-      console.log("promise.all= ", response1, response2);
+      // console.log("promise.all= ", response1, response2);
 
       const { following } = response1.data
       const { followers } = response2.data
@@ -38,14 +38,14 @@ const useFollow = () => {
 
       getFollowData();
 
-    } catch (error:any) {
-      console.log(error);
+    } catch (error: any) {
+      // console.log(error);
       alert(error.response.data.message || "Error in following")
     }
   }
 
   const removeFollower = async (id: string | undefined) => {
-    try{
+    try {
       await api.delete(
         `follow/unfollow?id=${id}`
       );
@@ -53,7 +53,7 @@ const useFollow = () => {
       getFollowData();
 
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   }
 
